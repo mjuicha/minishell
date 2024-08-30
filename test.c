@@ -1,12 +1,11 @@
-
-#include <unistd.h>
-#include <stdio.h> // for printf
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 int main(void)
 {
-    char *pwd;
-    
-    pwd = getcwd(NULL, 0);
-    printf("pwd: %s\n", pwd);
+    char *rl;
+    rl = readline("");
+    printf("%s\n", rl);
     return (0);
 }

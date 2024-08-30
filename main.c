@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:30 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/08/30 19:49:23 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/08/30 20:29:34 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	main(int ac, char **av)
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
-	fprintf(stdout,"%d\n",getpid());
+	char *line=readline("");
+	printf("%s",line);
 	while (1)
 	{
+		// main(ac,av);
 	}
 }
