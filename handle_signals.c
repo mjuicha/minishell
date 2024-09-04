@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:14:23 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/08/31 18:47:16 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/02 18:28:08 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ void handler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+void    l(void)
+{
+    system("leaks minishell");
 }
 
 void    end_of_line(void)
@@ -36,9 +40,9 @@ char    *handle_signals(void)
     signal(SIGTSTP, SIG_IGN);
     rl_catch_signals = 0;
 	line = readline("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ");
+    if (!line)
+        end_of_line();
     if (line && ft_strlen(line) == 0)
         free(line);
-    else if (!line)
-        end_of_line();
     return (line);
 }

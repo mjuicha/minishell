@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/08/31 12:57:51 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/04 11:14:17 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
 
 void	display_prompt(void);
 char    *handle_signals(void);
