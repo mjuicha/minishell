@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 19:13:18 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/06 21:40:50 by mjuicha          ###   ########.fr       */
+/*   Created: 2024/09/05 20:00:58 by mjuicha           #+#    #+#             */
+/*   Updated: 2024/09/06 20:01:39 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *str)
+void    ft_parser(char *line)
 {
-	int	x;
-
-	x = 0;
-	while (str[x] != '\0')
-		x++;
-	return (x);
+    (void)line;
 }

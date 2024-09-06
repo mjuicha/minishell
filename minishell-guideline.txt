@@ -1,0 +1,63 @@
+let's write a guideline for the minishell project
+what we do before ?
+- we read the subject
+- we understand the subject
+- we create the main function
+- we create the main loop
+- we create the prompt
+- we create the signal handler
+- we take the input from the user
+Now let's do other things :
+- first we need to parse the input
+- we need to create a parser
+- we need to create a lexer
+- we need to create a tokenizer
+- we need to create a parser
+- we need to create a syntax tree
+- we need to create a command structure
+- we need to create a checker for the syntax tree
+- we need to create a executor
+- we need to create a builtin
+- we need to create a command
+- we need to create a redirection
+- we need to create a pipe
+- we need to create a signal handler
+the we finish the project
+```
+understanding the subject is the most important thing in the project, if you don't understand the subject you can't do anything, you can't write a single line of code, you can't write a single function, you can't write a single file, you can't write a single project, you can't write a single program, you can't write a single script, you can't write a single command
+the subject is about the minishell project, the minishell project is about creating a shell,
+a shell is a program that takes the input from the user and executes the command
+the command is a program that takes the input from the user and executes the command
+to execute the command we need to parse the input, we need to create a parser, we need to create a lexer, we need to create a tokenizer, we need to create a parser, we need to create a syntax tree, we need to create a command structure, we need to create a checker for the syntax tree, we need to create an executor, we need to create a builtin, we need to create a command, we need to create a redirection, we need to create a pipe, we need to create a signal handler
+```
+
+Now let's understand some concepts to build the minishell project
+- what is a shell ?
+a shell is a program that takes the input from the user and executes the command
+- what is a command ?
+a command is a program that takes the input from the user and executes the command
+- what is a parser ?
+a parser is a program that takes the input from the user and parses the input parse the input means to analyze the input and create a syntax tree
+- what is a lexer ?
+a lexer is a program that takes the input from the user and tokenizes the input 
+- what is a tokenizer ?
+a tokenizer is a program that takes the input from the user and tokenizes the input tokenize the input means to split the input into tokens // tokens are the smallest unit of the input // example : the input is "ls -l" the tokens are "ls" and "-l"
+- what is a syntax tree ?
+a syntax tree is a tree that represents the syntax of the input
+- what is a command structure ?
+a command structure is a structure that represents the command
+- what is a checker ?
+a checker is a program that checks the syntax tree
+- what is an executor ?
+an executor is a program that executes the command
+- what is a builtin ?
+a builtin is a program that is built into the shell
+- what is a redirection ?
+a redirection is a program that redirects the input and output of the command
+- what is a pipe ?
+a pipe is a program that connects the input and output of the command
+- what is a signal handler ?
+a signal handler is a program that handles the signals
+
+Now let's understand what we should do to build the minishell project step by step
+1. take the input from the user // we do that using the readline function

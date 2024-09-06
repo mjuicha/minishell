@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:14:23 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/02 18:28:08 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/06 21:41:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ void    l(void)
 
 void    end_of_line(void)
 {
+    ft_putstr_fd("\033[A\033[K", 2);
+    ft_putstr_fd("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ", 2);
     ft_putendl_fd("exit", 2);
     exit(EXIT_SUCCESS);
 }
 
-char    *handle_signals(void)
+char    *ft_handle_signals(void)
 {
     char    *line;
 
@@ -42,7 +44,5 @@ char    *handle_signals(void)
 	line = readline("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ");
     if (!line)
         end_of_line();
-    if (line && ft_strlen(line) == 0)
-        free(line);
     return (line);
 }

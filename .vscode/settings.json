@@ -4,6 +4,14 @@
         "history.h": "c",
         "stdio.h": "c",
         "cstdio": "c",
-        "minishell.h": "c"
+        "minishell.h": "c",
+        "stdlib.h": "c",
+        "unistd.h": "c",
+        "dirent.h": "c",
+        "string.h": "c",
+        "fcntl.h": "c",
+        "wait.h": "c",
+        "limits.h": "c",
+        "errno.h": "c"
     }
 }
