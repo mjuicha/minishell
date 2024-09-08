@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/07 18:11:01 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/08 11:47:35 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ char    *ft_handle_signals(void);
 void    ft_parser(char *line);
 int     ft_lexer(char *line);
 int     empty(char *line);
-void    ft_init_env(t_env **env_list, char **env);
+t_env   *ft_init_env(t_env *env_list, char **env);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:30 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/07 18:10:30 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/08 11:44:58 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	env_list = NULL;
-	ft_init_env(&env_list, env);
+	env_list = ft_init_env(env_list, env);
 	while (1)
 	{
 		line = ft_handle_signals();

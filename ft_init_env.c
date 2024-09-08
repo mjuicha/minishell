@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:04:00 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/07 18:45:20 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/08 11:46:55 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,47 +73,49 @@ t_env    *ft_envnew(char *env)
     return (new);
 }
 
-t_env    *ft_envadd_back(t_env **env_list, t_env *new)
+t_env    *ft_envadd_back(t_env *env_list, t_env *new)
 {
     t_env    *tmp;
 
     if (!new)
         return (NULL);
-    if (!*env_list)
+    if (!env_list)
     {
-        *env_list = new;
-        return (*env_list);
+        env_list = new;
+        return (env_list);
     }
-    tmp = *env_list;
+    tmp = env_list;
     while (tmp->next)
         tmp = tmp->next;
     tmp->next = new;
-    return (*env_list);
+    return (env_list);
 }
 
-// void    show_env(t_env *env_list)
-// {
-//     t_env    *tmp;
+void    show_env(t_env *env_list)
+{
+    t_env    *tmp;
 
-//     tmp = env_list;
-//     while (tmp)
-//     {
-//         printf("var: %s\n", tmp->var);
-//         printf("value: %s\n", tmp->value);
-//         tmp = tmp->next;
-//     }
-// }
+    tmp = env_list;
+    while (tmp)
+    {
+        printf("%s=", tmp->var);
+        printf("%s\n", tmp->value);
+        tmp = tmp->next;
+    }
+}
 
-void    ft_init_env(t_env **env_list, char **env)
+t_env    *ft_init_env(t_env *env_list, char **env)
 {
     int i;
 
     if (!env || !env[0])
-        return ;
+        return (NULL);
     i = 0;
     while (env[i])
     {
-        ft_envadd_back(env_list, ft_envnew(env[i]));
+        env_list = ft_envadd_back(env_list, ft_envnew(env[i]));
         i++;
     }
+    // show_env(env_list);
+    return (env_list);
 }
