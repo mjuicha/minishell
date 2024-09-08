@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:04:00 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/08 11:46:55 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/08 11:57:14 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,21 @@ char    *fill_value(char *env)
     return (str);
 }
 
+char    *fill_env(char *env)
+{
+    char    *str;
+    int     i;
+
+    i = 0;
+    if (!env)
+        return (NULL);
+    str = malloc(sizeof(char) * (ft_strlen(env) + 1));
+    if (!str)
+        return (NULL);
+    str = ft_strdup(env);
+    return (str);
+}
+
 t_env    *ft_envnew(char *env)
 {
     t_env    *new;
@@ -67,6 +82,7 @@ t_env    *ft_envnew(char *env)
     new = malloc(sizeof(t_env));
     if (!new)
         return (NULL);
+    new->env = fill_env(env);
     new->var = fill_var(env);
     new->value = fill_value(env);
     new->next = NULL;
@@ -98,8 +114,7 @@ void    show_env(t_env *env_list)
     tmp = env_list;
     while (tmp)
     {
-        printf("%s=", tmp->var);
-        printf("%s\n", tmp->value);
+        printf("%s\n", tmp->env);
         tmp = tmp->next;
     }
 }
@@ -116,6 +131,6 @@ t_env    *ft_init_env(t_env *env_list, char **env)
         env_list = ft_envadd_back(env_list, ft_envnew(env[i]));
         i++;
     }
-    // show_env(env_list);
+    show_env(env_list);
     return (env_list);
 }

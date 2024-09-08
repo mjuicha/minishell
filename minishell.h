@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/08 11:47:35 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/08 11:49:49 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define VALUE  1
 typedef struct s_env
 {
+    char            *env;
     char            *var;
     char            *value;
     struct s_env    *next;
