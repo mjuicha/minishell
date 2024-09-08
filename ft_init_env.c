@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:04:00 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/08 11:57:14 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/08 12:08:33 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,6 @@ t_env    *ft_init_env(t_env *env_list, char **env)
         env_list = ft_envadd_back(env_list, ft_envnew(env[i]));
         i++;
     }
-    show_env(env_list);
+    // show_env(env_list);
     return (env_list);
 }
