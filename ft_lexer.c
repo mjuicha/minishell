@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 19:10:17 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/09 03:25:16 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/10 04:43:50 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,62 +82,61 @@ int ft_pipes_ampersand_chaining_errors(char *line)
     return (0);
 }
 
-void    show_token(char **token)
-{
-    int i = 0;
-    while (token && token[i])
-    {
-        printf("%s\n", token[i]);
-        i++;
-    }    
-}
+// void    show_token(char **token)
+// {
+//     int i = 0;
+//     while (token && token[i])
+//     {
+//         printf("%s\n", token[i]);
+//         i++;
+//     }    
+// }
 
-char    **ft_tokenizer(char *line)
-{
-    char    **token = malloc(sizeof(char *) * 1000);
-    int i;
-    int j;
-    int a;
-    int ind;
+// char    **ft_tokenizer(char *line)
+// {
+//     char    **token = malloc(sizeof(char *) * 1000);
+//     int i;
+//     int j;
+//     int a;
+//     int ind;
 
-    i = 0;
-    a = 0;
-    while (line[i])
-    {
-        ind = 0;
-        while (line[i] == ' ')
-            i++;
-        j = 0;
-            token[a] = malloc(sizeof(char) * 1000);
-        while (line[i] && line[i] != ' ')
-        {
-            token[a][j++] = line[i++];
-            ind = 1;
-        }
-        if (ind == 1)
-            token[a][j] = '\0';
-        a++;
-    }
-    token[a] = NULL;
-    i = 0;
-    while (token && token[i])// 
-    {
-        printf("%s\n", token[i]);
-        i++;
-    } 
-    // show_token(token);
-    return (token);
-}
+//     i = 0;
+//     a = 0;
+//     while (line[i])
+//     {
+//         ind = 0;
+//         while (line[i] == ' ')
+//             i++;
+//         j = 0;
+//             token[a] = malloc(sizeof(char) * 1000);
+//         while (line[i] && line[i] != ' ')
+//         {
+//             token[a][j++] = line[i++];
+//             ind = 1;
+//         }
+//         if (ind == 1)
+//             token[a][j] = '\0';
+//         a++;
+//     }
+//     token[a] = NULL;
+//     i = 0;
+//     while (token && token[i])// 
+//     {
+//         printf("%s\n", token[i]);
+//         i++;
+//     } 
+//     // show_token(token);
+//     return (token);
+// }
     
-int ft_lexer(char *line)
+int ft_lexer(t_shell **shell)
 {
-    char    **token;
-    token = ft_tokenizer(line);
-    if (ft_three_pipes_ampersand(line))
-        return (1);
-    if (ft_pipes_ampersand_semicolons_errors(line) == 1)
-        return (1);
-    if (ft_pipes_ampersand_chaining_errors(line) == 1)
-        return (0);
+    (*shell)->token = ft_tokenizer((*shell)->line);
+    // if (ft_three_pipes_ampersand(line))
+    //     return (1);
+    // if (ft_pipes_ampersand_semicolons_errors(line) == 1)
+    //     return (1);
+    // if (ft_pipes_ampersand_chaining_errors(line) == 1)
+    //     return (0);
     return (0);
 }

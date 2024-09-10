@@ -5,9 +5,9 @@
 
 int main(void)
 {
-    char *rl;
-    rl[0] = '\0';
-    if (rl && strlen(rl) == 0)
-        printf("ss\n");
+    int i = 0;
+    if ((i++) == 2)
+        puts("sdghdhfghdgf");
+    printf("%d\n",i);
     return (0);
 }

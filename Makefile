@@ -6,7 +6,8 @@ OBJ_DIR = obj
 INCLUDE_DIR = includes
 LIBFT_DIR = libft
 
-SRC = main.c handle_signals.c ft_parser.c ft_lexer.c main_utils.c ft_init_env.c
+SRC = main.c handle_signals.c ft_parser.c ft_lexer.c main_utils.c ft_init_env.c ft_init_shell.c \
+ft_tokenizer.c
 OBJ = $(SRC:%.c=%.o)
 
 INCLUDE = -I $(INCLUDE_DIR) -I/Users/${USER}/.brew/opt/readline/include

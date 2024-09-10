@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:04:00 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/09 03:10:31 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/10 02:55:17 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,12 @@ void    show_env(t_env *env_list)
     }
 }
 
-t_env    *ft_init_env(t_env *env_list, char **env)
+t_env    *ft_init_env(char **env)
 {
-    int i;
+    t_env   *env_list;
 
+    env_list = NULL;
+    int i;
     if (!env || !env[0])
         return (NULL);
     i = 0;

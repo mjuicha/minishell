@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:14:23 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/07 16:18:01 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/10 06:15:52 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void    end_of_line(void)
     ft_putstr_fd("\033[A\033[K", 2);
     ft_putstr_fd("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ", 2);
     ft_putendl_fd("exit", 2);
+    // atexit(l);
     exit(EXIT_SUCCESS);
 }
 
