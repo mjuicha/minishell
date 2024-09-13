@@ -12,6 +12,7 @@
         "fcntl.h": "c",
         "wait.h": "c",
         "limits.h": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "libft.h": "c"
     }
 }

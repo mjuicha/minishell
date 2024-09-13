@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/11 10:26:52 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/13 22:46:42 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void    check_quotes(char *line, int *i)
             (*i)++;
         (*i)++;
     }
-    if (line[*i] && nospec(line[*i]))//g"
+    else if (line[*i] && nospec(line[*i]))//g"
     {
         (*i)++;
         check_quotes(line, i);
@@ -42,32 +42,25 @@ t_token    *get_quoted(char *line, int *i)
     t_token *new = malloc(sizeof(t_token));
     char    fin;
     int ind;
+    int add;
     if (!line)
         return (NULL);
-    // puts("hh");
 
     fin = line[*i];
     ind = ++(*i);
     while (line[*i] && line[*i] != fin)
-        (*i)++;
-    (*i)++;
-    while (nospec(line[*i]))
     {
-        fin = line[*i]; 
-        if (line[*i] == DQ || line[*i] == SQ)
-        {
-            (*i)++;
-            while (line[*i] && line[*i] != fin)
-                (*i)++;
-            if (line[*i] == fin)
-                (*i)++;
-        }
-        else
-            (*i)++;
+        write(1, &line[*i], 1);
+        (*i)++;
     }
+    (*i)++;
+    check_quotes(line, i);
+    add = 0;
+    if (line[*i - 1] == fin)
+        add = 1;
     // check_quotes(line, i);
-    fin = line[*i];
-    new->token_name = ft_substr(line, ind, *i - ind);
+    new->token_name = ft_substr(line, ind, *i - ind - add, fin);
+    // printf("new->token_name = %s\n", new->token_name);
     new->type = WORD;
     new->next = NULL;
     return (new);
@@ -132,24 +125,14 @@ t_token    *get_word(char *line, int *i)
             break ;
         (*i)++;
     }
-    while (nospec(line[*i]))
-    {
-        fin = line[*i]; 
-        if (line[*i] == DQ || line[*i] == SQ)
-        {
-            (*i)++;
-            while (line[*i] && line[*i] != fin)
-                (*i)++;
-            if (line[*i] == fin)
-                (*i)++;
-        }
-        else
-            (*i)++;
-    }
-    new->token_name = ft_substr(line, start, *i - start);
+    fin = 0;
+    if (line[*i] == DQ || line[*i] == SQ)
+        fin = line[*i];
+    check_quotes(line, i);
+    new->token_name = ft_substr(line, start, *i - start, fin);
     new->type = WORD;
     new->next = NULL;
-     return (new);
+    return (new);
 }
 
 t_token *ft_tokenadd_back(t_token *token, t_token *new)
