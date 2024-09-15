@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:44:55 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/13 22:45:57 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/15 17:54:25 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize, char fin)
 	{
 		while (src[x] && x < (dstsize - 1))
 		{
-			if (src[i] == fin)
+			while (src[i] == fin)
 				i++;
 			dest[x] = src[i];
 			i++;
