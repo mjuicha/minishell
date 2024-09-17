@@ -1,0 +1,7 @@
+1,4c1
+< [32;1m➜[35;1m  minishell $[0m echo example
+< [12]echo
+< [12]example
+< [32;1m➜[35;1m  minishell $[0m 
+---
+> example

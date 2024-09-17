@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/15 20:18:54 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/16 20:12:58 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ int     count_malloc(char *line, int i, char quote, int start)
 {
     int x;
     int res;
-    
+    char quote;
+    int status;
+
+    status = 0;
+    i = 0;    
     res = 0;
     x = start;
     if (!line)
@@ -59,73 +63,44 @@ int     count_malloc(char *line, int i, char quote, int start)
     return (res);
 }
 
-// t_token    *get_quoted(char *line, int *i, int start)
-// {
-//     t_token *new = malloc(sizeof(t_token));
-//     char    quote;
-//     int     status;
-//     int     malloc;
+char   to_quote(char *line, int i)
+{
+    while (line[i])
+    {
+        if (line[i] == DQ || line[i] == SQ)
+            return (line[i]);
+        i++;
+    }
+    return (0);
+}
 
-//     if (!line)
-//         return (NULL);
-//     quote = line[*i];
-//     status = 0;
+t_token    *get_quoted(char *line, int *i, int start)
+{
+    t_token *new = malloc(sizeof(t_token));
+    char    quote;
+    int     status;
+    int     malloc;
 
-//     malloc = 1;
-//     while (line[*i])
-//     {
-//         if (line[*i] == quote)
-//             status++;
-//         else if (nospec(line[*i] == 0 && status % 2 == 1))
-//             break ;
-//         (*i)++;
-//     }
-//     malloc = count_malloc(line, *i, quote, start);
-//     // printf("add = %d\n", malloc);
-//     new->token_name = ft_substr(line, start, malloc, quote);
-//     // printf("new->token_name = %s\n", new->token_name);
-//     new->type = WORD;
-//     new->next = NULL;
-//     return (new);
-// }
+    if (!line)
+        return (NULL);
+    quote = to_quote(line, *i);
+    status = 0;
 
-// t_token    *get_quoted(char *line, int *i)
-// {
-//     t_token *new = malloc(sizeof(t_token));
-//     char    fin;
-//     int ind;
-//     int add;
-//     if (!line)
-//         return (NULL);
-
-//     fin = line[*i];
-//     ind = ++(*i);
-//     while (line[*i] && line[*i] != fin)
-//     {
-//         // write(1, &line[*i], 1);
-//         (*i)++;
-//     }
-//     (*i)++;
-//     check_quotes(line, i);
-//     add = 0;
-//     while (ind < *i)
-//     {
-//         if (line[ind] == fin)
-//             ind++;
-//         else 
-//         {
-//             add++;
-//             ind++;
-//         }
-//     }
-//     // printf("add = %d\n", add);
-//     // check_quotes(line, i);
-//     new->token_name = ft_substr(line, ind, add, fin);
-//     // printf("new->token_name = %s\n", new->token_name);
-//     new->type = WORD;
-//     new->next = NULL;
-//     return (new);
-// }
+    malloc = 1;
+    while (line[*i])
+    {
+        if (line[*i] == quote)
+            status++;
+        else if (!nospec(line[*i])  && status % 2 == 0)
+            break ;
+        (*i)++;
+    }
+    malloc = count_malloc(line, *i, quote, start);
+    new->token_name = ft_substr(line, start, malloc, quote);
+    new->type = WORD;
+    new->next = NULL;
+    return (new);
+}
 
 t_token    *get_redirection(char *line, int *i)
 {
@@ -239,13 +214,13 @@ t_token     *ft_tokenizer(char *line)
         while (line[i] == ' ' || line[i] == '\t')
             i++;
         if (line[i] == DQ || line[i] == SQ)
-            token = ft_tokenadd_back(token,get_quoted(line, &i));
+            token = ft_tokenadd_back(token,get_quoted(line, &i, i));
         else if (line[i] == RI || line[i] == RO)
              token = ft_tokenadd_back(token, get_redirection(line, &i));
         else if (line[i] == PP)
             token = ft_tokenadd_back(token, get_pipe(line, &i));
         else
-            token = ft_tokenadd_back(token, get_word(line, &i));
+            token = ft_tokenadd_back(token, get_quoted(line, &i, i));
         // puts("hh");
     }
     show_token(token);
