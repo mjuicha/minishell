@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 18:39:53 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/13 22:46:09 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/17 12:08:57 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "../minishell.h"
 
 typedef struct s_list
 {
@@ -68,7 +69,7 @@ char				*ft_strjoin(char const *s1, char const *s2);
 
 size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);
 
-size_t				ft_strlcpy(char *dst, const char *src, size_t size, char fin);
+size_t				ft_strlcpy(char *dst, const char *src, size_t size, char quote);
 
 size_t				ft_strlen(const char *s);
 

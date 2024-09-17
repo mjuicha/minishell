@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/16 20:12:58 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/17 12:24:26 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void    check_quotes(char *line, int *i)
     //     check_quotes(line, i);
 }
 
-int     count_malloc(char *line, int i, char quote, int start)
+int     count_malloc(char *line, int i, int start)
 {
     int x;
     int res;
@@ -49,14 +49,24 @@ int     count_malloc(char *line, int i, char quote, int start)
     int status;
 
     status = 0;
-    i = 0;    
     res = 0;
     x = start;
     if (!line)
         return (0);
     while (line[x] && x < i)
     {
-        if (line[x] != quote)
+        if ((line[x] == DQ || line[x] == SQ) && status == 0)
+        {
+            quote = line[x];
+            status = 1;
+            x++;
+        }
+        if (quote == line[x] && status == 1)
+        {
+            quote = 0;
+            status = 0;
+        }
+        if (!(line[x] == DQ || line[x] == SQ) || status == 1)
             res++;
         x++;
     }
@@ -95,7 +105,7 @@ t_token    *get_quoted(char *line, int *i, int start)
             break ;
         (*i)++;
     }
-    malloc = count_malloc(line, *i, quote, start);
+    malloc = count_malloc(line, *i, start);
     new->token_name = ft_substr(line, start, malloc, quote);
     new->type = WORD;
     new->next = NULL;
