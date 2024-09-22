@@ -11,7 +11,7 @@ Now let's do other things :
 - first we need to parse the input
 - we need to create a parser
 - we need to create a lexer
-- we need to create a tokenizer
+- we need to create a tokenizer// done
 - we need to create a parser
 - we need to create a syntax tree
 - we need to create a command structure

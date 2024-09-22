@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:04:00 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/10 02:55:17 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/21 18:01:58 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,9 @@ char    *fill_env(char *env)
     i = 0;
     if (!env)
         return (NULL);
-    str = malloc(sizeof(char) * (ft_strlen(env) + 1));
+    str = ft_strdup(env);
     if (!str)
         return (NULL);
-    str = ft_strdup(env);
     return (str);
 }
 

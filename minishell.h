@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/10 04:38:19 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/22 16:34:17 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,15 @@ typedef struct s_shell
 }           t_shell;
 
 void	display_prompt(void);
-char    *ft_handle_signals(void);
+char    *ft_handle_signals(t_shell **shell);
 void    ft_parser(char *line);
 int     ft_lexer(t_shell **shell);
 int     empty(char *line);
 t_env   *ft_init_env(char **env);
 void    ft_init_shell(t_shell **shell, char **env);
 t_token     *ft_tokenizer(char *line);
-// void    show_env(t_env *env_list);
+void    ft_reset(t_shell **shell);
+void    show_env(t_env *env_list);
+void    show_token(t_token *token);
 
 #endif

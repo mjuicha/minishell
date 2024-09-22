@@ -6,12 +6,18 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:30 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/10 01:18:40 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/22 16:46:54 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <readline/readline.h>
+
+void ll(void)
+{
+	system("leaks minishell");
+}
+void    end_of_line(t_shell **shell);
 
 int	main(int ac, char **av, char **env)
 {
@@ -19,13 +25,14 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	(void)env;
 	ft_init_shell(&shell, env);
 	while (1)
 	{
-		shell->line = ft_handle_signals();
+		shell->line = ft_handle_signals(&shell);
 		if (empty(shell->line))
 			continue ;
-		add_history(shell->line); 
+		add_history(shell->line);
 		if (ft_lexer(&shell) == 1)
 		{
 			free(shell->line);
@@ -34,5 +41,8 @@ int	main(int ac, char **av, char **env)
 		ft_parser(shell->line);
 		if (shell->line)
 			free(shell->line);
+		ft_reset(&shell);
 	}
+	atexit(ll);
+	return (puts("exit"),0);
 }

@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:14:23 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/10 06:15:52 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/22 16:47:05 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,44 @@ void    l(void)
     system("leaks minishell");
 }
 
-void    end_of_line(void)
+void    free_env(t_env **env_list)
+{
+    t_env   *tmp;
+
+    tmp = *env_list;
+    while (tmp)
+    {
+        free(tmp->env);
+        free(tmp->var);
+        free(tmp->value);
+        tmp = tmp->next;
+    }
+    tmp = *env_list;
+    while (tmp)
+    {
+        free(tmp);
+        tmp = tmp->next;
+    }
+}
+
+void    free_shell(t_shell **shell)
+{
+    free_env(&(*shell)->env_list);
+    free(*shell);
+    // free_token((*shell)->token);
+}
+
+void    end_of_line(t_shell **shell)
 {
     ft_putstr_fd("\033[A\033[K", 2);
     ft_putstr_fd("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ", 2);
     ft_putendl_fd("exit", 2);
+    free_shell(shell);
     // atexit(l);
     exit(EXIT_SUCCESS);
 }
 
-char    *ft_handle_signals(void)
+char    *ft_handle_signals(t_shell **shell)
 {
     char    *line;
 
@@ -44,6 +72,6 @@ char    *ft_handle_signals(void)
     rl_catch_signals = 0;
 	line = readline("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ");
     if (!line)
-        end_of_line();
+        end_of_line(shell);
     return (line);
 }
