@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:30 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/22 16:46:54 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/22 16:54:24 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	(void)env;
 	ft_init_shell(&shell, env);
 	while (1)
 	{
@@ -43,6 +42,5 @@ int	main(int ac, char **av, char **env)
 			free(shell->line);
 		ft_reset(&shell);
 	}
-	atexit(ll);
-	return (puts("exit"),0);
+	return (0);
 }

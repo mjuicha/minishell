@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/22 16:33:36 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/22 19:06:50 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,24 +84,22 @@ char   to_quote(char *line, int i)
     return (0);
 }
 
-t_token    *get_quoted(char *line, int *i, int start)
+t_token    *get_quoted(char *line, int *i, int start, int *status)
 {
     t_token *new = malloc(sizeof(t_token));
     char    quote;
-    int     status;
     int     malloc;
-
     if (!line)
         return (NULL);
     quote = to_quote(line, *i);
-    status = 0;
+    *status = 0;
 
     malloc = 1;
     while (line[*i])
     {
         if (line[*i] == quote)
-            status++;
-        else if (!nospec(line[*i])  && status % 2 == 0)
+            (*status)++;
+        else if (!nospec(line[*i])  && (*status) % 2 == 0)
             break ;
         (*i)++;
     }
@@ -216,23 +214,30 @@ t_token     *ft_tokenizer(char *line)
 {
     t_token *token;
     int     i;
+    int     status;
+
     token = NULL;
     if ( !line)
         return (NULL);
-
     i = 0;
+    status = 0;
     while (line[i])
     {
         while (line[i] == ' ' || line[i] == '\t')
             i++;
         if (line[i] == DQ || line[i] == SQ)
-            token = ft_tokenadd_back(token,get_quoted(line, &i, i));
+            token = ft_tokenadd_back(token,get_quoted(line, &i, i, &status));
         else if (line[i] == RI || line[i] == RO)
              token = ft_tokenadd_back(token, get_redirection(line, &i));
         else if (line[i] == PP)
             token = ft_tokenadd_back(token, get_pipe(line, &i));
         else
-            token = ft_tokenadd_back(token, get_quoted(line, &i, i));
+            token = ft_tokenadd_back(token, get_quoted(line, &i, i, &status));
+    }
+    if (status % 2 != 0)
+    {
+        printf("Error: quote not closed\n");
+        return (NULL);
     }
     // show_token(token);
     return (token);
