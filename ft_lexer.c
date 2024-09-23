@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 19:10:17 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/22 19:00:29 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/23 17:10:43 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,23 +128,19 @@ int ft_pipes_ampersand_chaining_errors(char *line)
 //     // show_token(token);
 //     return (token);
 // }
-void test_show(t_shell **shell);
 void    lk(void)
 {
     system("leaks minishell");
 }
 int ft_lexer(t_shell **shell)
 {
-    (*shell)->token = ft_tokenizer((*shell)->line);
+    (*shell)->token = ft_tokenizer((*shell)->line, shell);
     show_token((*shell)->token);
-    // if (syntax_errors(shell))
-    //     return (1);
-    // if (ft_three_pipes_ampersand((*shell)->line))
-    //     return (1);
-    // if (ft_pipes_ampersand_semicolons_errors((*shell)->line) == 1)
-    //     return (1);
-    // if (ft_pipes_ampersand_chaining_errors((*shell)->line) == 1)
-    //     return (0);
+    if (syntax_error((*shell)->token))
+    {
+        ft_reset(shell);
+        return (1);
+    }
     return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/22 19:06:50 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/23 14:14:16 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void    show_token(t_token *token)
     }
 }
 
-t_token     *ft_tokenizer(char *line)
+t_token     *ft_tokenizer(char *line, t_shell **shell)
 {
     t_token *token;
     int     i;

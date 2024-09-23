@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/22 19:05:32 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/23 14:14:21 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int     ft_lexer(t_shell **shell);
 int     empty(char *line);
 t_env   *ft_init_env(char **env);
 void    ft_init_shell(t_shell **shell, char **env);
-t_token     *ft_tokenizer(char *line);
+t_token     *ft_tokenizer(char *line, t_shell **shell);
 void    ft_reset(t_shell **shell);
 void    show_env(t_env *env_list);
 void    show_token(t_token *token);
