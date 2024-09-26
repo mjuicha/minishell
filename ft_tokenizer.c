@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/23 14:14:16 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/26 18:38:00 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void    show_token(t_token *token)
     }
 }
 
-t_token     *ft_tokenizer(char *line, t_shell **shell)
+t_token     *ft_tokenizer(char *line)
 {
     t_token *token;
     int     i;
@@ -229,6 +229,7 @@ t_token     *ft_tokenizer(char *line, t_shell **shell)
             token = ft_tokenadd_back(token,get_quoted(line, &i, i, &status));
         else if (line[i] == RI || line[i] == RO)
              token = ft_tokenadd_back(token, get_redirection(line, &i));
+            
         else if (line[i] == PP)
             token = ft_tokenadd_back(token, get_pipe(line, &i));
         else
@@ -236,7 +237,7 @@ t_token     *ft_tokenizer(char *line, t_shell **shell)
     }
     if (status % 2 != 0)
     {
-        printf("Error: quote not closed\n");
+        printf("minishell: syntax error: unclosed quotes\n");
         return (NULL);
     }
     // show_token(token);

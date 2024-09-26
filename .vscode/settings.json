@@ -13,6 +13,7 @@
         "wait.h": "c",
         "limits.h": "c",
         "errno.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "complex": "c"
     }
 }

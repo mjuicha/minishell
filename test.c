@@ -21,6 +21,8 @@ int main(int argc, char const *argv[])
     // char *str = malloc(sizeof(char) * 10);
     // str = NULL;
     // (void)str;
+    char i = 'a';
+    printf("%s\n", &i);
     by();
     while (1)
     {}

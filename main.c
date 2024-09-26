@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:30 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/22 16:54:24 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/24 15:17:46 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int	main(int ac, char **av, char **env)
 			free(shell->line);
 		ft_reset(&shell);
 	}
+	// atexit(ll);
 	return (0);
 }

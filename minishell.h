@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/23 14:14:21 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/26 18:43:24 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,21 @@
 # define VALUE  1
 # define DQ     34
 # define SQ     39
-# define RI     60
-# define RO     62
+# define RI     60 // <
+# define RO     62 // >
 # define PP     124
 # define WORD   27
-# define HERDOC   28
-# define APPEND   29
+# define HERDOC 28 // <<
+# define APPEND 29 // >>
+# define DOLLAR 36
+
+typedef struct s_exp
+{
+    char            *sub;
+    char            *res;
+    struct s_exp    *next;
+}                   t_exp;
+
 typedef struct s_env
 {
     char            *env;
@@ -58,6 +67,7 @@ typedef struct s_shell
     char    *line;
     t_env   *env_list;
     t_token *token;
+    t_exp   *exp;
 }           t_shell;
 
 void	display_prompt(void);
@@ -67,9 +77,10 @@ int     ft_lexer(t_shell **shell);
 int     empty(char *line);
 t_env   *ft_init_env(char **env);
 void    ft_init_shell(t_shell **shell, char **env);
-t_token     *ft_tokenizer(char *line, t_shell **shell);
+t_token     *ft_tokenizer(char *line);
 void    ft_reset(t_shell **shell);
 void    show_env(t_env *env_list);
 void    show_token(t_token *token);
-
+int     syntax_error(t_token *token);
+void    ft_expand(t_shell **shell);
 #endif

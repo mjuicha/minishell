@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 14:17:53 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/21 14:25:22 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/24 15:17:08 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void    free_token(t_token **token)
 {
     t_token *tmp;
+    if (!token)
+        return ;
 
     tmp = *token;
     while (tmp)
