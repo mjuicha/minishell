@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 11:13:39 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/13 21:04:18 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/28 11:07:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	str = (char *)malloc(size * sizeof(char) + 1);
 	if (!str)
 		return (NULL);
-	ft_strlcpy(str, (char *)s1, size + 1, '\0');
+	ft_strlcpy(str, (char *)s1, size + 1);
 	return (str);
 }

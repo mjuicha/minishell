@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/26 18:38:00 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/28 14:22:05 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,14 @@ int     count_malloc(char *line, int i, int start)
 {
     int x;
     int res;
-    char quote;
-    int status;
 
-    status = 0;
     res = 0;
     x = start;
     if (!line)
         return (0);
     while (line[x] && x < i)
     {
-        if ((line[x] == DQ || line[x] == SQ) && status == 0)
-        {
-            quote = line[x];
-            status = 1;
-            x++;
-        }
-        if (quote == line[x] && status == 1)
-        {
-            quote = 0;
-            status = 0;
-        }
-        if (!(line[x] == DQ || line[x] == SQ) || status == 1)
-            res++;
+        res++;
         x++;
     }
     return (res);
@@ -97,14 +82,20 @@ t_token    *get_quoted(char *line, int *i, int start, int *status)
     malloc = 1;
     while (line[*i])
     {
-        if (line[*i] == quote)
-            (*status)++;
+        if (line[*i] == SQ || line[*i] == DQ)
+        {
+            if (*status % 2 == 0 || line[*i] == quote)
+            {
+                (*status)++;
+                quote = line[*i];
+            }
+        }
         else if (!nospec(line[*i])  && (*status) % 2 == 0)
             break ;
         (*i)++;
     }
     malloc = count_malloc(line, *i, start);
-    new->token_name = ft_substr(line, start, malloc, quote);
+    new->token_name = ft_substr(line, start, malloc);
     new->type = WORD;
     new->next = NULL;
     return (new);
@@ -173,7 +164,7 @@ t_token    *get_word(char *line, int *i)
     if (line[*i] == DQ || line[*i] == SQ)
         fin = line[*i];
     check_quotes(line, i);
-    new->token_name = ft_substr(line, start, *i - start, fin);
+    new->token_name = ft_substr(line, start, *i - start);
     new->type = WORD;
     new->next = NULL;
     return (new);
@@ -204,7 +195,6 @@ void    show_token(t_token *token)
     int i = 12;
     while (tmp)
     {
-        printf("[%d]%d\n",i-10, tmp->type);
         printf("[%d]%s\n",i, tmp->token_name);
         tmp = tmp->next;
     }

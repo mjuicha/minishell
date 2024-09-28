@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/26 19:15:51 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/28 16:06:50 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,117 @@ void    show_exp(t_shell **shell)
     }
 }
 
+// char *valid_status(char *s, t_shell **shell)
+// {
+//     int i = 0;
+//     int start;
+//     t_exp *exp;
+//     if (!s || !shell)
+//         return (NULL);
+//     while (s[i])
+//     {
+//         if (s[i] == DOLLAR)
+//         {
+//             start = ++i;
+//             while (s[i] && (isalnum(s[i]) || s[i] == '_'))
+//                 i++;
+//             if (start == i)
+//                 break ;
+//                     exp = malloc(sizeof(t_exp));
+//             exp->sub = ft_substr(s,start, i - start, 0);
+//             exp->next = NULL;
+//             if (search(&exp, (*shell)->env_list))
+//                 ft_lstadd_backex((*shell)->exp, exp);
+//         }
+//         i++;
+//     }
+//     show_exp(shell);
+//     return (NULL);
+// }
+        // if (s[i] == DOLLAR)
+        // {
+        //     start = ++i;
+        //     while (s[i] && s[i] != '\n')
+        //         i++;
+        //     if (start == i)
+        //         break ;
+                
+        //     exp = malloc(sizeof(t_exp));
+        //     exp->sub = ft_substr(s,start, i - start);
+        //     exp->next = NULL;
+        //     if (search(&exp, (*shell)->env_list))
+        //         ft_lstadd_backex((*shell)->exp, exp);
+        //     free(exp->res);
+        //     free(exp->sub);
+        // }
+        // i++;
+void    single_quote(char *s, int *i)
+{
+    if (!s)
+        return ;
+    (*i)++;
+    while (s[*i] && s[*i] != SQ)
+        (*i)++;
+    (*i)++;
+}
+
+int    to_check(char *s, int i)
+{
+    while (ft_isalnum(s[i]) || ft_isalpha(s[i]) || s[i] == '_')
+        i++;
+    return (i);
+}
+
+void    check_nextt(char *s, int *n, t_shell **shell)
+{
+    (*n)++;
+    int i = *n;
+    t_exp *exp = malloc(sizeof(t_exp));
+    int m;
+    m = to_check(s, i);
+    exp->sub = ft_substr(s, i, m - i);
+    if (search(&exp, (*shell)->env_list) == 1)
+    {
+        printf("it is valid\n");
+        printf("the value of %s is %s\n", exp->sub, exp->res);
+    }
+    else 
+    {
+        printf("your input is not valid ??\nREPEAT ;)\n");
+    }
+}
+
+void    double_quote(char *s, int *n, t_shell **shell)
+{
+    int     i = *n;
+
+    if (!s)
+        return ;
+    i++;
+    while (s[i] && s[i] != DQ)
+    {
+        if (s[i] == DOLLAR)
+            check_nextt(s, &i, shell);
+        i++;
+    }
+}
+
 char    *valid_status(char *s, t_shell **shell)
 {
     int i = 0;
-    int start;
-    t_exp *exp;
+    // int start;
+    // int status = 0;
+    // int mode = 1;
+    // (void)exp;
     if (!s || !shell)
         return (NULL);
+    
     while (s[i])
     {
-        if (s[i] == DOLLAR)
-        {
-            start = ++i;
-            while (s[i] && s[i] != '\n')
-                i++;
-            if (start == i)
-                break ;
-                
-            exp = malloc(sizeof(t_exp));
-            exp->sub = ft_substr(s,start, i - start, 0);
-            exp->next = NULL;
-            if (search(&exp, (*shell)->env_list))
-                ft_lstadd_backex((*shell)->exp, exp);
-            free(exp->res);
-            free(exp->sub);
-        }
+        if (s[i] == SQ)
+            single_quote(s, &i);
+        if (s[i] == DQ)
+            double_quote(s, &i, shell);
         i++;
     }
     show_exp(shell);
