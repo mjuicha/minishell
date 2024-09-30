@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/26 18:43:24 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/30 15:51:30 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@
 # define WORD   27
 # define HERDOC 28 // <<
 # define APPEND 29 // >>
-# define DOLLAR 36
+# define DOLLAR 36  // $
+# define QM    63   // ?    
 
 typedef struct s_exp
 {
     char            *sub;
     char            *res;
+    int             valid;
     struct s_exp    *next;
 }                   t_exp;
 
