@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/28 16:06:50 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/09/30 10:38:01 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ int search(t_exp **exp, t_env *env)
         return (0);
     while (tmp_env)
     {
-        if (ft_strncmp((*exp)->sub, tmp_env->var, ft_strlen((*exp)->sub)) == 0)
+        if (ft_strncmp((*exp)->sub, tmp_env->var, ft_strlen((*exp)->sub) + 1) == 0)
         {
             ((*exp)->res = ft_strdup(tmp_env->value));
             return (1);
         }
+        
         tmp_env = tmp_env->next;
     }
     return (0);
@@ -114,7 +115,7 @@ void    single_quote(char *s, int *i)
 
 int    to_check(char *s, int i)
 {
-    while (ft_isalnum(s[i]) || ft_isalpha(s[i]) || s[i] == '_')
+    while (ft_isalnum(s[i]) || s[i] == '_')
         i++;
     return (i);
 }
@@ -127,6 +128,7 @@ void    check_nextt(char *s, int *n, t_shell **shell)
     int m;
     m = to_check(s, i);
     exp->sub = ft_substr(s, i, m - i);
+    *n = m;
     if (search(&exp, (*shell)->env_list) == 1)
     {
         printf("it is valid\n");
@@ -145,12 +147,22 @@ void    double_quote(char *s, int *n, t_shell **shell)
     if (!s)
         return ;
     i++;
+    if (s[i] == DQ)
+    {
+        i++;
+        return ;
+    }
     while (s[i] && s[i] != DQ)
     {
         if (s[i] == DOLLAR)
             check_nextt(s, &i, shell);
+        if (s[i] == DQ)
+            continue;
         i++;
     }
+    if (s[i] == DQ)
+        i++;
+    *n = i;
 }
 
 char    *valid_status(char *s, t_shell **shell)
