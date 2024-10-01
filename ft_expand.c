@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/01 16:35:16 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/01 17:33:07 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,16 @@ int search(t_exp **exp, t_env *env)
 
 void    show_exp(t_shell **shell)
 {
-    if (!(*shell)->exp)
+    t_exp *exp = (*shell)->exp;
+    if (!exp)
     {
         printf("no exp\n");
         return ;}
     puts("fd\n");
-    while ((*shell)->exp)
+    while (exp)
     {
-        printf("[%s]    ----->  {%s}\n", (*shell)->exp->sub, (*shell)->exp->res);
-        (*shell)->exp = (*shell)->exp->next;
+        printf("[%s]    ----->  {%s}\n", exp->sub, exp->res);
+        exp = exp->next;
     }
 }
 
@@ -261,7 +262,7 @@ char    *valid_status(char *s, t_shell **shell)
         else
             simple_word(s, &i, shell);
     }
-    show_exp(shell);
+    // show_exp(shell);
     return (NULL);
 }
 
@@ -288,11 +289,13 @@ int count_malloc_quote(char *s)
             res++;
         i++;
     }
+    return (res);
 }
 
 int count_malloc_exp(char *s, t_exp *exp)
 {
     t_exp *mexp = exp;
+    (void)s;
     if (!mexp)
         return (0);
     int plus = 0;
@@ -316,27 +319,75 @@ char    *expand_var(char *s, t_shell **shell)
     t_exp *exp;
     char *exp_str;
     int i;
-    int malloc = 0;
+    int x = 0;
+    int xp = 0;
+    int mallloc = 0;
+    int quote = 0;
+    int status = 0;
     exp = (*shell)->exp;
-    malloc = count_malloc_quote(s) + count_malloc_exp(s, (*shell)->exp);
+    mallloc = count_malloc_quote(s) + count_malloc_exp(s, (*shell)->exp);
+    exp_str = malloc(sizeof(char) * mallloc + 1);
     i = 0;
     while (s[i])
     {
-        
+        if ((s[i] == DQ || s[i] == SQ) && status == 0)
+        {
+            quote = s[i];
+            status = 1;
+            i++;
+        }
+        if (s[i] == quote && status == 1)
+        {
+            quote = 0;
+            status = 0;
+        }
+        if (!(s[i] == DQ || s[i] == SQ) || status == 1)
+        {
+                xp = 0;
+               while (s[i] == DOLLAR && exp)
+               {
+                    if (exp->valid)
+                    {
+                        xp = 0;
+                        i += ft_strlen(exp->sub) + 1;
+                        printf("exp->sub = %s\n", exp->sub);
+                        write(1, &s[i], 1);
+                        write(1, "\n\n", 2);
+                        while (exp->res[xp])
+                        {
+                            exp_str[x] = exp->res[xp];
+                            xp++;
+                            x++;
+                        }
+                    }
+                    else
+                        i = i + ft_strlen(exp->sub) + 1;
+                    exp = exp->next;
+               }
+               if (xp == 0)
+               {
+                   exp_str[x] = s[i];
+                   x++;
+               }
+        }
+        i++;
     }
+    exp_str[x] = '\0';
+    printf("exp_str = %s\n", exp_str);
+    return (exp_str);
 }
 
 char    *start_expand(char *s, t_shell **shell)
 {
     if (!s || !shell)
         return (NULL);
-    char *string = ft_strdup(s);
+    // char *string = ft_strdup(s);
 
     if (ft_strchr(s, DOLLAR))
     {
          valid_status(s, shell) ;
-         free(s);
-         return (expand_var(string, shell));
+        //  free(s);
+         return (expand_var(s, shell));
         // /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*///**//**/
             // return (expand_var(s, shell));/**/
     }
