@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/30 18:08:59 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/01 16:35:16 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,18 @@ void    spec_exp(char *s, int *i, t_shell **shell)
     *i += 1;
     (*shell)->exp = ft_lstadd_backex((*shell)->exp, exp);
 }
-      
+
+t_exp   *exp_DOLLAR(void)
+{
+    t_exp *exp_DOLLAR;
+
+    exp_DOLLAR = malloc(sizeof(t_exp));
+    exp_DOLLAR->sub = ft_strdup("$");
+    exp_DOLLAR->res = ft_strdup("$");
+    exp_DOLLAR->valid = 1;
+    exp_DOLLAR->next = NULL;
+    return (exp_DOLLAR);
+}
 void    check_nextt(char *s, int *n, t_shell **shell)
 {
     (*n)++;
@@ -175,6 +186,13 @@ void    check_nextt(char *s, int *n, t_shell **shell)
         return ;
     }
     
+    if (m == i)
+    {
+        exp = exp_DOLLAR();
+        *n = i + 1;
+        (*shell)->exp = ft_lstadd_backex((*shell)->exp, exp);
+        return ;
+    }
     exp->sub = ft_substr(s, i, m - i);
     *n = m;
     search(&exp, (*shell)->env_list);
@@ -274,7 +292,23 @@ int count_malloc_quote(char *s)
 
 int count_malloc_exp(char *s, t_exp *exp)
 {
-    
+    t_exp *mexp = exp;
+    if (!mexp)
+        return (0);
+    int plus = 0;
+    int minus = 0;
+    while (mexp)
+    {
+        if (mexp->valid  == 1)
+        {
+            minus -= (ft_strlen(mexp->sub) + 1);
+            plus += ft_strlen(mexp->res);
+        }
+        else
+            minus -= (ft_strlen(mexp->sub) + 1);
+        mexp = mexp->next;
+    }
+    return (minus + plus);
 }
 
 char    *expand_var(char *s, t_shell **shell)
@@ -284,9 +318,7 @@ char    *expand_var(char *s, t_shell **shell)
     int i;
     int malloc = 0;
     exp = (*shell)->exp;
-    malloc = count_malloc_quote(s);
-    count_malloc_exp(s, (*shell)->exp);
-    
+    malloc = count_malloc_quote(s) + count_malloc_exp(s, (*shell)->exp);
     i = 0;
     while (s[i])
     {
