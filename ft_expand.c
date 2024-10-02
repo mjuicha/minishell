@@ -6,7 +6,11 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/02 18:33:13 by mjuicha          ###   ########.fr       */
+=======
+/*   Updated: 2024/10/01 17:33:07 by mjuicha          ###   ########.fr       */
+>>>>>>> origin/main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,6 +363,12 @@ char    *expand_var(char *s, t_shell **shell)
                     {
                         xp = 0;
                         i += ft_strlen(exp->sub) + 1;
+<<<<<<< HEAD
+=======
+                        printf("exp->sub = %s\n", exp->sub);
+                        write(1, &s[i], 1);
+                        write(1, "\n\n", 2);
+>>>>>>> origin/main
                         while (exp->res[xp])
                         {
                             exp_str[x] = exp->res[xp];
@@ -379,7 +389,11 @@ char    *expand_var(char *s, t_shell **shell)
         i++;
     }
     exp_str[x] = '\0';
+<<<<<<< HEAD
     printf("exp_str = |%s|\n", exp_str);
+=======
+    printf("exp_str = %s\n", exp_str);
+>>>>>>> origin/main
     return (exp_str);
 }
 
