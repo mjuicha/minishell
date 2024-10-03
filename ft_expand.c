@@ -6,11 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/02 18:33:13 by mjuicha          ###   ########.fr       */
-=======
-/*   Updated: 2024/10/01 17:33:07 by mjuicha          ###   ########.fr       */
->>>>>>> origin/main
+/*   Updated: 2024/10/03 11:52:46 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,19 +215,19 @@ void    double_quote(char *s, int *n, t_shell **shell)
     if (s[i] == DQ)
     {
         i++;
+        *n = i;
         return ;
     }
     while (s[i] && s[i] != DQ)
     {
-        printf("the char is %c\n", s[i]);
         if (s[i] == DOLLAR)
         {
             check_nextt(s, &i, shell);
-            continue;
         }
         // if (s[i] == DQ || s[i] == DOLLAR)
         //     continue;
-        i++;
+        else
+            i++;
     }
     if (s[i] == DQ)
         i++;
@@ -284,9 +280,9 @@ int count_malloc_quote(char *s)
     int i = 0;
     int status = 0;
     int quote = 0;
-    int res = 0;
-    while (s[i])
-    {
+    int res = 0; 
+    while (s[i]) 
+    { 
         if ((s[i] == DQ || s[i] == SQ) && status == 0)
         {
             quote = s[i];
@@ -302,7 +298,7 @@ int count_malloc_quote(char *s)
             res++;
         i++;
     }
-    return (res);
+    return (res + 1);
 }
 
 int count_malloc_exp(char *s, t_exp *exp)
@@ -362,13 +358,7 @@ char    *expand_var(char *s, t_shell **shell)
                     if (exp->valid)
                     {
                         xp = 0;
-                        i += ft_strlen(exp->sub) + 1;
-<<<<<<< HEAD
-=======
-                        printf("exp->sub = %s\n", exp->sub);
-                        write(1, &s[i], 1);
-                        write(1, "\n\n", 2);
->>>>>>> origin/main
+                        i += ft_strlen(exp->sub);
                         while (exp->res[xp])
                         {
                             exp_str[x] = exp->res[xp];
@@ -377,7 +367,7 @@ char    *expand_var(char *s, t_shell **shell)
                         }
                     }
                     else
-                        i = i + ft_strlen(exp->sub) + 1;
+                        i = i + ft_strlen(exp->sub);
                     exp = exp->next;
                }
                if (xp == 0)
@@ -389,11 +379,7 @@ char    *expand_var(char *s, t_shell **shell)
         i++;
     }
     exp_str[x] = '\0';
-<<<<<<< HEAD
     printf("exp_str = |%s|\n", exp_str);
-=======
-    printf("exp_str = %s\n", exp_str);
->>>>>>> origin/main
     return (exp_str);
 }
 
