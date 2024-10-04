@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/28 14:22:05 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/03 12:30:13 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,9 @@ void    show_token(t_token *token)
         printf("[%d]%s\n",i, tmp->token_name);
         tmp = tmp->next;
     }
+    printf(" __________________\n");
+    printf("|   next token     |\n");
+    printf("|__________________|\n");
 }
 
 t_token     *ft_tokenizer(char *line)

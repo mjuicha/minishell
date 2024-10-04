@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/30 15:51:30 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/03 16:24:41 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@
 # define HERDOC 28 // <<
 # define APPEND 29 // >>
 # define DOLLAR 36  // $
-# define QM    63   // ?    
+# define QM    63   // ?
+# define BS    92   // 
 
 typedef struct s_exp
 {

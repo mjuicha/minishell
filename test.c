@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 
 void l(void)
 {
@@ -21,8 +22,7 @@ int main(int argc, char const *argv[])
     // char *str = malloc(sizeof(char) * 10);
     // str = NULL;
     // (void)str;
-    char i = 'a';
-    printf("%s\n", &i);
+    printf("%lu\n", strlen("$="));
     by();
     while (1)
     {}
