@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/04 19:16:23 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/05 18:57:46 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ int    to_check(char *s, int i)
 {
     if (s[i] == DOLLAR || s[i] == QM || is_space(s[i]))
         return (0);
+    if (ft_isdigit(s[i]))
+        return (++i);
     while (ft_isalnum(s[i]) || s[i] == '_')
         i++;
     return (i);
@@ -160,7 +162,6 @@ void    spec_exp(char *s, int *i, t_shell **shell)
         exp->valid = 1;
         exp->sub = ft_strdup("$");
         // *i -= 1;
-        write(1, &s[*i], 1);
     }
     exp->next = NULL;
     *i += 1;
@@ -195,8 +196,6 @@ void    check_nextt(char *s, int *n, t_shell **shell)
     {
         exp->sub = ft_substr(s, i - 2, m - i + 2);
         exp->res = ft_substr(s, i - 1, m - i + 1);
-        printf("sub = %s\n", exp->sub);
-        printf("res = %s\n", exp->res);
         exp->valid = -1;
         exp->next = NULL;
         (*shell)->exp = ft_lstadd_backex((*shell)->exp, exp);
@@ -343,7 +342,7 @@ int count_malloc_exp(char *s, t_exp *exp)
         }
             
         else
-            minus -= (ft_strlen(mexp->sub));
+            minus -= (ft_strlen(mexp->sub) + 1);
             
         mexp = mexp->next;
     }
@@ -380,9 +379,11 @@ char    *expand_var(char *s, t_shell **shell)
         }
         if (!(s[i] == DQ || s[i] == SQ) || status == 1)
         {
-                xp = 0;
+            if (s[i] == DOLLAR && exp)
+            {
                while (s[i] == DOLLAR && exp)
                {
+                write(1, &s[i], 1);
                     if (exp->valid == 1)
                     {
                         xp = 0;
@@ -397,7 +398,7 @@ char    *expand_var(char *s, t_shell **shell)
                     else if (exp->valid == -1)
                     {
                         while (exp->res[xp])
-                        {
+                        {   
                             exp_str[x] = exp->res[xp];
                             xp++;
                             x++;
@@ -414,22 +415,31 @@ char    *expand_var(char *s, t_shell **shell)
                             x++;
                         }
                         i = i + ft_strlen(exp->sub);
-                        xp = 0;
+                        exp_str[x++] = s[i++];
                     }
                     else
-                        i = i + ft_strlen(exp->sub);
+                    {i = i + ft_strlen(exp->sub);printf("valid = %d\n", exp->valid);write(1, &s[i], 1);}
                     exp = exp->next;
                }
-               if (xp == 0 && exp->valid != -1)
-               {
-                   exp_str[x] = s[i];
-                   x++;
-               }
+            }
+            else
+            {
+                if (s[i] == BS && s[i + 1] == DOLLAR)
+                    {}
+                else
+                {
+                    exp_str[x] = s[i];
+                    x++;
+                }
+            }
         }
         i++;
+        
     }
     exp_str[x] = '\0';
-    printf("the exp str is : %s\n", exp_str);
+    printf("[string]----->  %s\n", exp_str);
+    free((*shell)->exp);
+    (*shell)->exp = NULL;
     return (exp_str);
 }
 
