@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/05 18:57:46 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/06 18:58:13 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ int     check_back_slash(char *s, int i)
         return (1);
     return 0;
 }
-void    check_nextt(char *s, int *n, t_shell **shell)
+void    check_nextt(char *s, int *n, t_shell **shell, int mode)
 {
     (*n)++;
     int i = *n;
@@ -212,6 +212,8 @@ void    check_nextt(char *s, int *n, t_shell **shell)
     if (m == i)
     {
         exp = exp_DOLLAR();
+        if ((s[i] == DQ || s[i] == SQ) && mode == 1)
+            exp->valid = 0;
         *n = i + 1;
         (*shell)->exp = ft_lstadd_backex((*shell)->exp, exp);
         return ;
@@ -239,7 +241,7 @@ void    double_quote(char *s, int *n, t_shell **shell)
     {
         if (s[i] == DOLLAR)
         {
-            check_nextt(s, &i, shell);
+            check_nextt(s, &i, shell, 0);
         }
         // if (s[i] == DQ || s[i] == DOLLAR)
         //     continue;
@@ -259,7 +261,7 @@ void    simple_word(char *s, int *n, t_shell **shell)
     while (s[i] && s[i] != DQ && s[i] != SQ)
     {
         if (s[i] == DOLLAR)
-            check_nextt(s, &i, shell);
+            check_nextt(s, &i, shell, 1);
         if (s[i] == DQ || s[i] == SQ)
             break ;
         if (s[i] == DOLLAR)
@@ -361,7 +363,7 @@ char    *expand_var(char *s, t_shell **shell)
     int status = 0;
     exp = (*shell)->exp;
     mallloc = count_malloc_quote(s) + count_malloc_exp(s, (*shell)->exp);
-    printf("mallloc = %d\n", mallloc);
+    // printf("mallloc = %d\n", mallloc);
     exp_str = malloc(sizeof(char) * mallloc + 1);
     i = 0;
     while (s[i])
@@ -377,13 +379,12 @@ char    *expand_var(char *s, t_shell **shell)
             quote = 0;
             status = 0;
         }
-        if (!(s[i] == DQ || s[i] == SQ) || status == 1)
+        if (!(s[i] == DQ || s[i] == SQ) || (status == 1 && (s[i] != DQ && s[i] != SQ)))
         {
             if (s[i] == DOLLAR && exp)
             {
                while (s[i] == DOLLAR && exp)
                {
-                write(1, &s[i], 1);
                     if (exp->valid == 1)
                     {
                         xp = 0;
@@ -397,13 +398,14 @@ char    *expand_var(char *s, t_shell **shell)
                     }
                     else if (exp->valid == -1)
                     {
+                        xp = 0;
                         while (exp->res[xp])
                         {   
                             exp_str[x] = exp->res[xp];
                             xp++;
                             x++;
                         }
-                        i = i + ft_strlen(exp->sub);
+                        i = i + ft_strlen(exp->sub) - 1;
                     }
                     else if(exp->valid == 2)
                     {
@@ -415,10 +417,9 @@ char    *expand_var(char *s, t_shell **shell)
                             x++;
                         }
                         i = i + ft_strlen(exp->sub);
-                        exp_str[x++] = s[i++];
                     }
                     else
-                    {i = i + ft_strlen(exp->sub);printf("valid = %d\n", exp->valid);write(1, &s[i], 1);}
+                        i = i + ft_strlen(exp->sub);
                     exp = exp->next;
                }
             }
@@ -433,11 +434,12 @@ char    *expand_var(char *s, t_shell **shell)
                 }
             }
         }
+        if (s[i] == 0)
+            break ;
         i++;
-        
     }
     exp_str[x] = '\0';
-    printf("[string]----->  %s\n", exp_str);
+    printf("[string]----->  [%s]\n", exp_str);
     free((*shell)->exp);
     (*shell)->exp = NULL;
     return (exp_str);
