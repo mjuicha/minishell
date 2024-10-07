@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/06 18:58:13 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/07 16:09:11 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void    spec_exp(char *s, int *i, t_shell **shell)
     else if (is_space(s[*i]))
     {
         exp->res = ft_strdup("$");
-        exp->valid = 1;
+        exp->valid = 2;
         exp->sub = ft_strdup("$");
         // *i -= 1;
     }
@@ -363,7 +363,7 @@ char    *expand_var(char *s, t_shell **shell)
     int status = 0;
     exp = (*shell)->exp;
     mallloc = count_malloc_quote(s) + count_malloc_exp(s, (*shell)->exp);
-    // printf("mallloc = %d\n", mallloc);
+    printf("mallloc = %d\n", mallloc);
     exp_str = malloc(sizeof(char) * mallloc + 1);
     i = 0;
     while (s[i])
@@ -379,7 +379,7 @@ char    *expand_var(char *s, t_shell **shell)
             quote = 0;
             status = 0;
         }
-        if (!(s[i] == DQ || s[i] == SQ) || (status == 1 && (s[i] != DQ && s[i] != SQ)))
+        if (!(s[i] == DQ || s[i] == SQ) || (status == 1))
         {
             if (s[i] == DOLLAR && exp)
             {
@@ -416,7 +416,8 @@ char    *expand_var(char *s, t_shell **shell)
                             xp++;
                             x++;
                         }
-                        i = i + ft_strlen(exp->sub);
+                        exp = exp->next;
+                        break;
                     }
                     else
                         i = i + ft_strlen(exp->sub);
@@ -439,7 +440,7 @@ char    *expand_var(char *s, t_shell **shell)
         i++;
     }
     exp_str[x] = '\0';
-    printf("[string]----->  [%s]\n", exp_str);
+    printf("[string]----->  [\x1b[31;1m%s\x1b[0m]\n", exp_str);//\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m // for Red is 
     free((*shell)->exp);
     (*shell)->exp = NULL;
     return (exp_str);
