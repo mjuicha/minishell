@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/03 16:24:41 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/09 18:13:10 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,6 @@ void    show_env(t_env *env_list);
 void    show_token(t_token *token);
 int     syntax_error(t_token *token);
 void    ft_expand(t_shell **shell);
+void     ft_heredoc(t_shell **shell);
+
 #endif
