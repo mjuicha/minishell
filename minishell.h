@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/09 18:13:10 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/10 20:10:40 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,28 @@ typedef struct s_token
     struct s_token  *next;
 }                   t_token;
 
+typedef struct s_save
+{
+    char            *str_save;
+    struct s_save   *next;
+}                   t_save;
+
+typedef struct s_herd
+{
+    char            *input;
+    int             exit;
+    int             store;
+    char            **del;
+    t_save          *save;
+}                   t_herd;
+
 typedef struct s_shell
 {
     char    *line;
     t_env   *env_list;
     t_token *token;
     t_exp   *exp;
+    t_save  *save;
 }           t_shell;
 
 void	display_prompt(void);
