@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/11 11:00:04 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/11 18:52:48 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,19 @@ void    herd_sig(int sig)
 {
     if (sig == SIGINT)
         *herd_flag() = 1;
-    ft_putstr_fd("\033[A\033[K", 2);
-    ft_putstr_fd("\n\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ", 2);
+    ft_putchar_fd('\n', 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 }
 
 void    signal_heredoc(t_herd **herd)
 {
     char *input = NULL;
 
-    signal(SIGINT, herd_sig);
+    printf("hh\n");
     if (*herd_flag() == 0)
         input = readline("> ");
-    if (!input)
+    if (!input || *herd_flag() == 1)
         eof_heredoc(herd);
     (*herd)->input = input;
 }
@@ -154,6 +155,15 @@ void    store_input(t_herd **herd)
     
 }
 
+int max(char *s1, char *s2)
+{
+    int x;
+    int y;
+
+    x = ft_strlen(s1);
+    y = ft_strlen(s2);
+    return (x >= y ? x : y);
+}
 t_save    *start_implementation(char **array, t_shell **shell)
 {
     t_herd *herd;
@@ -166,10 +176,11 @@ t_save    *start_implementation(char **array, t_shell **shell)
     while (1)
     {
         signal_heredoc(&herd);
-        if (herd->exit == 1 || *herd_flag() == 1)
+        signal(SIGINT, herd_sig);
+        if (herd->exit == 1 || *herd_flag() == 1 )
             return (free(herd), NULL);
         riddance(herd->del, &herd, &i);
-        if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], ft_strlen(herd->input)) == 0)
+        if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], max(herd->input, herd->del[i])) == 0)
             return (free(herd), herd->save);
         store_input(&herd);
         free(herd->input);
