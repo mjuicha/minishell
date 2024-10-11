@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/10 20:11:35 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/11 11:00:04 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int count_heredoc(t_shell **shell)
 void show_array(char **arr)
 {
     int i = 0;
-    if (!arr)
+    if (!arr || !arr[0])
         return ;
     while (arr[i])
     {
@@ -64,11 +64,28 @@ void    eof_heredoc(t_herd **herd)
     (*herd)->exit = 1;
 }
 
+int *herd_flag(void)
+{
+    static int flag;
+    
+    return (&flag);
+}
+
+void    herd_sig(int sig)
+{
+    if (sig == SIGINT)
+        *herd_flag() = 1;
+    ft_putstr_fd("\033[A\033[K", 2);
+    ft_putstr_fd("\n\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ", 2);
+}
+
 void    signal_heredoc(t_herd **herd)
 {
-    char *input;
+    char *input = NULL;
 
-    input = readline("> ");
+    signal(SIGINT, herd_sig);
+    if (*herd_flag() == 0)
+        input = readline("> ");
     if (!input)
         eof_heredoc(herd);
     (*herd)->input = input;
@@ -106,7 +123,6 @@ t_save    *ft_lstnew_hd(char *s)
 void show_save(t_save *save)
 {
     t_save *tmp = save;
-    printf("hi\n");
     while (tmp)
     {
         printf("sasasasasasasa is >>>>>>> [%s]\n",tmp->str_save);
@@ -146,10 +162,11 @@ t_save    *start_implementation(char **array, t_shell **shell)
         return (NULL);
     int i = 0;
     (void)shell;
+    *herd_flag() = 0;
     while (1)
     {
         signal_heredoc(&herd);
-        if (herd->exit == 1)
+        if (herd->exit == 1 || *herd_flag() == 1)
             return (free(herd), NULL);
         riddance(herd->del, &herd, &i);
         if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], ft_strlen(herd->input)) == 0)
@@ -185,6 +202,7 @@ void ft_heredoc(t_shell **shell)
     }
     array[i] = NULL;
     show_array(array);
-    (*shell)->save = start_implementation(array, shell);
+    if (array && array[0])
+        (*shell)->save = start_implementation(array, shell);
     show_save((*shell)->save);
 }
