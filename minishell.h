@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/10 20:10:40 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/17 15:54:57 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ void    ft_reset(t_shell **shell);
 void    show_env(t_env *env_list);
 void    show_token(t_token *token);
 int     syntax_error(t_token *token);
-void    ft_expand(t_shell **shell);
+void    ft_quoting(t_shell **shell);
 void     ft_heredoc(t_shell **shell);
-
+char    *expand_var(char *s, t_shell **shell);
+void    check_nextt(char *s, int *n, t_shell **shell, int mode);
 #endif

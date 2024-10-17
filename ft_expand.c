@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/07 16:09:11 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/17 16:01:01 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ void    check_nextt(char *s, int *n, t_shell **shell, int mode)
         return ;
     }
     exp->sub = ft_substr(s, i, m - i);
+    printf("sub = %s\n", exp->sub);
     *n = m;
     search(&exp, (*shell)->env_list);
     (*shell)->exp = ft_lstadd_backex((*shell)->exp, exp);
@@ -243,8 +244,8 @@ void    double_quote(char *s, int *n, t_shell **shell)
         {
             check_nextt(s, &i, shell, 0);
         }
-        // if (s[i] == DQ || s[i] == DOLLAR)
-        //     continue;
+        if (s[i] == DQ || s[i] == DOLLAR)
+            continue;
         else
             i++;
     }
@@ -258,6 +259,7 @@ void    simple_word(char *s, int *n, t_shell **shell)
     int i = *n;
     if (!s)
         return ;
+    (void)shell;
     while (s[i] && s[i] != DQ && s[i] != SQ)
     {
         if (s[i] == DOLLAR)
@@ -290,7 +292,6 @@ char    *valid_status(char *s, t_shell **shell)
         else
             simple_word(s, &i, shell);
     }
-    // show_exp(shell);
     return (NULL);
 }
 
@@ -332,7 +333,7 @@ int count_malloc_exp(char *s, t_exp *exp)
     {
         if (mexp->valid  == 1 || mexp->valid == -1)
         {
-            minus -= ft_strlen(mexp->sub);//in case of $= it will be 2 one for $ and one for = 
+            minus -= ft_strlen(mexp->sub);
             if (mexp->valid == 1)
                 minus -= 1;
             plus += ft_strlen(mexp->res);
@@ -446,23 +447,52 @@ char    *expand_var(char *s, t_shell **shell)
     return (exp_str);
 }
 
-char    *start_expand(char *s, t_shell **shell)
+char *save_str(char *s)
+{
+    int mallloc = 0;
+    mallloc = count_malloc_quote(s);
+    printf("malloc = %d\n", mallloc);
+    int i = 0;
+    int x = 0;
+    int quote = 0;
+    int status = 0;
+    char *exp_str = malloc(sizeof(char) * mallloc + 1);
+    while (s[i])
+    {
+        if (s[i] == DQ || s[i] == SQ)
+        {
+            quote = s[i];
+            status = 1;
+            i++;
+        }
+        if (s[i] == quote && status == 1)
+        {
+            quote = 0;
+            status = 0;
+        }
+        if (!(s[i] == DQ || s[i] == SQ) || status == 1)
+        {
+            exp_str[x] = s[i];
+            x++;
+        }
+        i++;
+    }
+    exp_str[x] = '\0';
+    printf("[string]----->  [\x1b[31;1m%s\x1b[0m]\n", exp_str);//\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m // for Red is
+    return (exp_str);
+}
+
+char    *start_quoting(char *s, t_shell **shell)
 {
     if (!s || !shell)
         return (NULL);
-    // char *string = ft_strdup(s);
-
-    if (ft_strchr(s, DOLLAR))
-    {
-         valid_status(s, shell) ;
-        //  free(s);
-        // /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*///**//**/
-            // return (expand_var(s, shell));/**/
-    }
-    return (expand_var(s, shell));
+    valid_status(s, shell);
+    printf("s = %s\n", s);
+    return (save_str(s));
+    // return (expand_var(s, shell));
 }
 
-void    ft_expand(t_shell **shell)
+void    ft_quoting(t_shell **shell)
 {
     t_token *token = (*shell)->token;
 
@@ -471,7 +501,7 @@ void    ft_expand(t_shell **shell)
     while (token)
     {
         if (token->type == WORD)
-            token->token_name = start_expand(token->token_name, shell);
+            token->token_name = start_quoting(token->token_name, shell);
         token = token->next;
     }
 }
