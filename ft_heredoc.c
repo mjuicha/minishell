@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/18 11:53:07 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/18 12:08:40 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,12 +146,38 @@ void    ft_lstadd_back_hd(t_save **save, t_save *save_new)
         tmp->next = save_new;
     }
 }
+char *ft_expand_heredoc(char *input, t_shell **shell)
+{
+    int i = 0;
+    int x = 0;
+    char *str = NULL;
+    while (input[i])
+    {
+        if (DOLLAR == input[i])
+        {
+            if (x == 0)
+            {
+                str = ft_substr(input, x, i - x);
+                x++;
+            }
+            check_nextt(input, &i, shell, 0);
+            str = ft_strjoin(str, (*shell)->exp->res);
+            x = i;
+        }
+        i++;
+    }
+    if (x != i)
+        str = ft_strjoin(str, ft_substr(input, x, i - x));
+    str = ft_strjoin(str, ft_substr(input, i, ft_strlen(input) - i));
+    printf("str is ||||||||||||||||||||||||||||||||||| [%s]\n", str);
+    return (str);
+}
 
-void    store_input(t_herd **herd)
+void    store_input(t_herd **herd, t_shell **shell)
 {
     if ((*herd)->store != 1)
         return ;
-    ft_lstadd_back_hd(&(*herd)->save, ft_lstnew_hd((*herd)->input));
+    ft_lstadd_back_hd(&(*herd)->save, ft_lstnew_hd(ft_expand_heredoc((*herd)->input, shell)));
     
 }
 
@@ -181,7 +207,7 @@ t_save    *start_implementation(char **array, t_shell **shell)
         riddance(herd->del, &herd, &i);
         if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], max(herd->input, herd->del[i])) == 0)
             return (free(herd), herd->save);
-        store_input(&herd);
+        store_input(&herd, shell);
         free(herd->input);
     }
 }
@@ -221,4 +247,7 @@ void ft_heredoc(t_shell **shell)
     if (array && array[0])
     {(*shell)->save = start_implementation(array, shell);
     show_save((*shell)->save);}
+    if (array && array[0] && printf("array[0] is {{{{{{{{{>>>>>>>}}}}}}}}} [%s]\n", array[0]))
+        (*shell)->save = start_implementation(array, shell);
+    show_save((*shell)->save);
 }
