@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/11 18:52:48 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/18 11:53:07 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,6 @@ t_save    *start_implementation(char **array, t_shell **shell)
     while (1)
     {
         signal_heredoc(&herd);
-        signal(SIGINT, herd_sig);
         if (herd->exit == 1 || *herd_flag() == 1 )
             return (free(herd), NULL);
         riddance(herd->del, &herd, &i);
@@ -185,6 +184,12 @@ t_save    *start_implementation(char **array, t_shell **shell)
         store_input(&herd);
         free(herd->input);
     }
+}
+
+char *rm(char *s)
+{
+    char *str;
+    return (str);
 }
 
 void ft_heredoc(t_shell **shell)
@@ -205,7 +210,7 @@ void ft_heredoc(t_shell **shell)
             token = token->next;
             if (token->type == WORD)
             {
-                array[i] = ft_strdup(token->token_name);
+                array[i] = ft_strdup(rm(token->token_name));
                 i++;
             }
         }
@@ -214,6 +219,6 @@ void ft_heredoc(t_shell **shell)
     array[i] = NULL;
     show_array(array);
     if (array && array[0])
-        (*shell)->save = start_implementation(array, shell);
-    show_save((*shell)->save);
+    {(*shell)->save = start_implementation(array, shell);
+    show_save((*shell)->save);}
 }
