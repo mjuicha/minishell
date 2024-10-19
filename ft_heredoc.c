@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/19 14:16:19 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/19 18:25:03 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,23 +109,98 @@ void init_herd(t_herd **herd, char **array)
     (*herd)->save = NULL;
 }
 
-char *ft_expand_hd(char *s)
+char *check_env(char *s, t_env **env)
+{
+    t_env *tmp = *env;
+    while (tmp)
+    {
+        if (ft_strncmp(s, tmp->var, ft_strlen(s) + 1) == 0)
+            return (printf("THE S is = %s\n", tmp->value) ,tmp->value);
+        tmp = tmp->next;
+    }
+    return (NULL);
+}
+
+int count_malloc_headoc(char *s, t_shell **shell, t_exp **expp)
+{
+    t_env *env = (*shell)->env_list;
+    t_exp *exp = NULL;
+    t_exp *head = NULL;
+    int i = 0;
+    int x = 0;
+    int res = 0;
+    if (!s)
+        return (0);
+    while (s[i])
+    {
+        if (s[i] == DOLLAR)
+        {
+            x = i;
+            while (s[i + 1] && (ft_isalnum(s[i + 1]) || s[i + 1] == '_'))
+                i++;
+            printf("s[%d] = %c\n", i, s[i]);
+            if (x != i)
+            {
+                i++;
+                if (exp)
+                    free(exp);
+                exp = malloc(sizeof(t_exp));
+                printf("int = %d\n", i - x - 1);
+                exp->sub = ft_substr(s, x + 1, i - x - 1);
+                printf("sub = %s\n", exp->sub);
+                exp->res = check_env(exp->sub, &env);
+                printf("res = %s\n", exp->res);
+                exp->next = NULL;
+                head = ft_lstadd_backex(head, exp);
+                if (exp->res)
+                    res += ft_strlen(exp->res);
+                if (!s[i])
+                    break ;
+            }
+        }   
+        i++;
+        res++;
+    }
+    *expp = head;
+    return (res + 1);
+}
+
+char *ft_expand_hd(char *s, t_shell **shell)
 {
     int i = 0;
     int x = 0;
-    char *res = NULL;
+    t_exp *exp = NULL;
+    char *res = malloc(sizeof(char) * (count_malloc_headoc(s, shell, &exp)));
     int m = 0;
-    m = to_check(s, i);
+    while (s[i])
+    {
+        if (s[i] == DOLLAR)
+        {
+            i += ft_strlen(exp->sub) + 1;
+            while (exp && exp->res && exp->res[m])
+            {
+                res[x] = exp->res[m];
+                m++;
+                x++;
+            }
+            exp = exp->next;
+        }
+        res[x] = s[i];
+        x++;
+        i++;
+    }
+    res[x] = '\0';
+    return (res);
 }
 
-t_save    *ft_lstnew_hd(char *s)
+t_save    *ft_lstnew_hd(char *s, t_shell **shell)
 {
     t_save *new;
 
     new = malloc(sizeof(t_save));
     if (!new)
         return (NULL);
-    new->str_save = ft_strdup(ft_expand_hd(s));
+    new->str_save = ft_strdup(ft_expand_hd(s, shell));
     new->next = NULL;
     return (new);
 }
@@ -156,11 +231,11 @@ void    ft_lstadd_back_hd(t_save **save, t_save *save_new)
     }
 }
 
-void    store_input(t_herd **herd)
+void    store_input(t_herd **herd, t_shell **shell)
 {
     if ((*herd)->store != 1)
         return ;
-    ft_lstadd_back_hd(&(*herd)->save, ft_lstnew_hd((*herd)->input));
+    ft_lstadd_back_hd(&(*herd)->save, ft_lstnew_hd((*herd)->input, shell));
     
 }
 
@@ -191,7 +266,7 @@ t_save    *start_implementation(char **array, t_shell **shell)
         riddance(herd->del, &herd, &i);
         if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], max(herd->input, herd->del[i])) == 0)
             return (free(herd), herd->save);
-        store_input(&herd);
+        store_input(&herd, shell);
         free(herd->input);
     }
 }
