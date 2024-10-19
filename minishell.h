@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/10 20:10:40 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/19 14:16:09 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,9 @@ void    show_token(t_token *token);
 int     syntax_error(t_token *token);
 void    ft_expand(t_shell **shell);
 void     ft_heredoc(t_shell **shell);
+int      count_malloc_quote(char *s);
+int     to_check(char *s, int i);
 
 #endif
+//"$""$"
+//

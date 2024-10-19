@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/11 18:52:48 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/19 14:16:19 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,15 @@ void init_herd(t_herd **herd, char **array)
     (*herd)->save = NULL;
 }
 
+char *ft_expand_hd(char *s)
+{
+    int i = 0;
+    int x = 0;
+    char *res = NULL;
+    int m = 0;
+    m = to_check(s, i);
+}
+
 t_save    *ft_lstnew_hd(char *s)
 {
     t_save *new;
@@ -116,7 +125,7 @@ t_save    *ft_lstnew_hd(char *s)
     new = malloc(sizeof(t_save));
     if (!new)
         return (NULL);
-    new->str_save = ft_strdup(s);
+    new->str_save = ft_strdup(ft_expand_hd(s));
     new->next = NULL;
     return (new);
 }
@@ -176,7 +185,7 @@ t_save    *start_implementation(char **array, t_shell **shell)
     while (1)
     {
         signal_heredoc(&herd);
-        signal(SIGINT, herd_sig);
+        // signal(SIGINT, herd_sig);
         if (herd->exit == 1 || *herd_flag() == 1 )
             return (free(herd), NULL);
         riddance(herd->del, &herd, &i);
@@ -187,6 +196,38 @@ t_save    *start_implementation(char **array, t_shell **shell)
     }
 }
 
+char    *ft_rm(char *s)
+{
+    int quote = 0;
+    int status = 0;
+    int i = 0;
+    char *res = malloc(sizeof(char) * (count_malloc_quote(s)));
+    printf("malloc = %d\n", count_malloc_quote(s));
+    int x = 0;
+    while (s[i])
+    {
+        if ((s[i] == DQ || s[i] == SQ) && status == 0)
+        {
+            quote = s[i];
+            status = 1;
+            i++;
+        }
+        if (quote == s[i] && status == 1)
+        {
+            quote = 0;
+            status = 0;
+        }
+        if (!(s[i] == DQ || s[i] == SQ) || status == 1)
+        {
+            res[x] = s[i];
+            x++;
+        }
+        i++;
+    }
+    res[x] = '\0';
+    return (res);
+}
+    
 void ft_heredoc(t_shell **shell)
 {
     int i;
@@ -205,7 +246,7 @@ void ft_heredoc(t_shell **shell)
             token = token->next;
             if (token->type == WORD)
             {
-                array[i] = ft_strdup(token->token_name);
+                array[i] = ft_strdup(ft_rm(token->token_name));
                 i++;
             }
         }
@@ -214,6 +255,6 @@ void ft_heredoc(t_shell **shell)
     array[i] = NULL;
     show_array(array);
     if (array && array[0])
-        (*shell)->save = start_implementation(array, shell);
-    show_save((*shell)->save);
+    {(*shell)->save = start_implementation(array, shell);
+    show_save((*shell)->save);}
 }
