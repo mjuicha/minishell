@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/19 17:25:00 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/20 13:04:42 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_herd
     int             exit;
     int             store;
     char            **del;
+    int             flag;
     t_save          *save;
 }                   t_herd;
 
@@ -87,6 +88,7 @@ typedef struct s_shell
     t_token *token;
     t_exp   *exp;
     t_save  *save;
+    int     hd_flag;
 }           t_shell;
 
 void	display_prompt(void);

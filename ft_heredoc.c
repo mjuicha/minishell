@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/19 18:25:03 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/20 18:28:21 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,10 @@ t_save    *ft_lstnew_hd(char *s, t_shell **shell)
     new = malloc(sizeof(t_save));
     if (!new)
         return (NULL);
-    new->str_save = ft_strdup(ft_expand_hd(s, shell));
+    if ((*shell)->hd_flag == 1)
+        new->str_save = ft_strdup(s);
+    else
+        new->str_save = ft_strdup(ft_expand_hd(s, shell));
     new->next = NULL;
     return (new);
 }
@@ -271,16 +274,14 @@ t_save    *start_implementation(char **array, t_shell **shell)
     }
 }
 
-char    *ft_rm(char *s)
+int count_malloc_quote_hd(char *s)
 {
-    int quote = 0;
-    int status = 0;
     int i = 0;
-    char *res = malloc(sizeof(char) * (count_malloc_quote(s)));
-    printf("malloc = %d\n", count_malloc_quote(s));
-    int x = 0;
-    while (s[i])
-    {
+    int status = 0;
+    int quote = 0;
+    int res = 0; 
+    while (s[i]) 
+    { 
         if ((s[i] == DQ || s[i] == SQ) && status == 0)
         {
             quote = s[i];
@@ -292,10 +293,43 @@ char    *ft_rm(char *s)
             quote = 0;
             status = 0;
         }
-        if (!(s[i] == DQ || s[i] == SQ) || status == 1)
+        if ((!(s[i] == DQ || s[i] == SQ) && !(s[i] == DOLLAR && (s[i + 1] == DQ || s[i + 1] == SQ) && status == 0)) || status == 1)
+            res++;
+        if (s[i] == DOLLAR && (s[i + 1] == DOLLAR))
+        {res++;i++;}
+        i++;
+    }
+    return (res + 1);
+}
+char    *ft_rm(char *s, t_shell **shell)
+{
+    int quote = 0;
+    int status = 0;
+    int i = 0;
+    (*shell)->hd_flag = 0;
+    char *res = malloc(sizeof(char) * (count_malloc_quote_hd(s)));
+    printf("malloc herdoc = %d\n", count_malloc_quote_hd(s));
+    int x = 0;
+    while (s[i])
+    {
+        if ((s[i] == DQ || s[i] == SQ) && status == 0)
+        {
+            (*shell)->hd_flag = 1;
+            quote = s[i];
+            status = 1;
+            i++;
+        }
+        if (quote == s[i] && status == 1)
+        {
+            quote = 0;
+            status = 0;
+        }
+        if (((!(s[i] == DQ || s[i] == SQ) && !(s[i] == DOLLAR && (s[i + 1] == DQ || s[i + 1] == SQ) && status == 0))) || status == 1)
         {
             res[x] = s[i];
             x++;
+            if (s[i] == DOLLAR && (s[i + 1] == DOLLAR))
+                {res[x] = s[i];x++;i++;}
         }
         i++;
     }
@@ -321,7 +355,7 @@ void ft_heredoc(t_shell **shell)
             token = token->next;
             if (token->type == WORD)
             {
-                array[i] = ft_strdup(ft_rm(token->token_name));
+                array[i] = ft_strdup(ft_rm(token->token_name, shell));
                 i++;
             }
         }

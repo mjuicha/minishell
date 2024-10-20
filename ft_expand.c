@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/19 15:43:06 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/20 17:40:00 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void    show_exp(t_shell **shell)
     while (exp)
     {
         printf("[%s]    ----->  {%s}\n", exp->sub, exp->res);
+        printf("valid = %d\n", exp->valid);
         exp = exp->next;
     }
 }
@@ -208,13 +209,13 @@ void    check_nextt(char *s, int *n, t_shell **shell, int mode)
         *n = i;
         return ;
     }
-    
     if (m == i)
     {
+        printf("i am here\n");
         exp = exp_DOLLAR();
         if ((s[i] == DQ || s[i] == SQ) && mode == 1)
             exp->valid = 0;
-        *n = i + 1;
+        *n = i;
         (*shell)->exp = ft_lstadd_backex((*shell)->exp, exp);
         return ;
     }
