@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/20 18:28:21 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/21 18:07:36 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,26 @@ void init_herd(t_herd **herd, char **array)
 char *check_env(char *s, t_env **env)
 {
     t_env *tmp = *env;
+
+    if (!s || !env)
+        return (NULL);
+    if (ft_strncmp(s, "?", 2) == 0 || ft_strncmp(s, "$", 2) == 0)
+        return (s);
     while (tmp)
     {
         if (ft_strncmp(s, tmp->var, ft_strlen(s) + 1) == 0)
-            return (printf("THE S is = %s\n", tmp->value) ,tmp->value);
+            return (tmp->value);
         tmp = tmp->next;
     }
     return (NULL);
 }
 
+int valid_next(char *s, int *i)
+{
+    if (s[*i + 1] == DOLLAR || s[*i + 1] == QM)
+        return (++(*i));
+    return (0);
+}
 int count_malloc_headoc(char *s, t_shell **shell, t_exp **expp)
 {
     t_env *env = (*shell)->env_list;
@@ -137,19 +148,19 @@ int count_malloc_headoc(char *s, t_shell **shell, t_exp **expp)
         {
             x = i;
             while (s[i + 1] && (ft_isalnum(s[i + 1]) || s[i + 1] == '_'))
+            {
+                if (s[x + 1] && s[x] == DOLLAR && ft_isdigit(s[x + 1]))
+                    {i++;break ;}
                 i++;
-            printf("s[%d] = %c\n", i, s[i]);
-            if (x != i)
+            }
+            if (x != i || valid_next(s, &i))
             {
                 i++;
                 if (exp)
                     free(exp);
                 exp = malloc(sizeof(t_exp));
-                printf("int = %d\n", i - x - 1);
                 exp->sub = ft_substr(s, x + 1, i - x - 1);
-                printf("sub = %s\n", exp->sub);
                 exp->res = check_env(exp->sub, &env);
-                printf("res = %s\n", exp->res);
                 exp->next = NULL;
                 head = ft_lstadd_backex(head, exp);
                 if (exp->res)
@@ -157,7 +168,7 @@ int count_malloc_headoc(char *s, t_shell **shell, t_exp **expp)
                 if (!s[i])
                     break ;
             }
-        }   
+        }
         i++;
         res++;
     }
@@ -174,7 +185,7 @@ char *ft_expand_hd(char *s, t_shell **shell)
     int m = 0;
     while (s[i])
     {
-        if (s[i] == DOLLAR)
+        if (s[i] == DOLLAR && exp)
         {
             i += ft_strlen(exp->sub) + 1;
             while (exp && exp->res && exp->res[m])

@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/20 17:40:00 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/21 18:07:56 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,7 +291,7 @@ char    *valid_status(char *s, t_shell **shell)
         else
             simple_word(s, &i, shell);
     }
-    // show_exp(shell);
+    show_exp(shell);
     return (NULL);
 }
 
