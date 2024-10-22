@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/21 18:07:56 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/22 18:18:20 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,8 @@ void    check_nextt(char *s, int *n, t_shell **shell, int mode)
         exp = exp_DOLLAR();
         if ((s[i] == DQ || s[i] == SQ) && mode == 1)
             exp->valid = 0;
+        else if ((s[i] == DQ || s[i] == SQ) && mode == 0)
+            exp->valid = 7;
         *n = i;
         (*shell)->exp = ft_lstadd_backex((*shell)->exp, exp);
         return ;

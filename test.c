@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
     // str = NULL;
     // (void)str;
     printf("%lu\n", strlen("$="));
-    by();
+    // by();
     while (1)
     {}
     return 0;

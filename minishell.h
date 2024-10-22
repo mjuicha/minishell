@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/20 13:04:42 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/22 17:44:06 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int      count_malloc_quote(char *s);
 int     to_check(char *s, int i);
 int     check_back_slash(char *s, int i);
 t_exp   *ft_lstadd_backex(t_exp *exp, t_exp *new);
-
+void    check_nextt(char *s, int *n, t_shell **shell, int mode);
 #endif
 //"$""$"
 //

@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/21 18:07:36 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/22 18:26:50 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,72 +132,129 @@ int valid_next(char *s, int *i)
         return (++(*i));
     return (0);
 }
-int count_malloc_headoc(char *s, t_shell **shell, t_exp **expp)
+int count_malloc_headoc(char *s, t_exp *exp)
 {
-    t_env *env = (*shell)->env_list;
-    t_exp *exp = NULL;
-    t_exp *head = NULL;
-    int i = 0;
-    int x = 0;
+    t_exp *mexp = exp;
     int res = 0;
-    if (!s)
+    if (!s || !mexp)
         return (0);
+    res = ft_strlen(s);
+    while (mexp)
+    {
+        if (mexp->valid == 1 || mexp->valid == -1)
+        {
+            res -= ft_strlen(mexp->sub);
+            if (mexp->valid == 1)
+                res -= 1;
+            res += ft_strlen(mexp->res);
+        }
+        else if (mexp->valid == 2 || mexp->valid == 7)
+        {
+            res += ft_strlen(mexp->res);
+            res -= (ft_strlen(mexp->sub));
+        }
+        else 
+            res -= (ft_strlen(mexp->sub) + 1);
+        mexp = mexp->next;
+    }
+    return (res + 1);
+}
+void    showw_exp(t_shell **shell)
+{
+    t_exp *exp = (*shell)->exp;
+    if (!exp)
+    {
+        printf("no exp\n");
+        return ;}
+    puts("fd\n");
+    while (exp)
+    {
+        printf("[%s]    ----->  {%s}\n", exp->sub, exp->res);
+        printf("valid = %d\n", exp->valid);
+        exp = exp->next;
+    }
+}
+void    simple_word_hd(char *s, t_shell **shell)
+{
+    int i = 0;
+    (*shell)->exp = NULL;
     while (s[i])
     {
         if (s[i] == DOLLAR)
-        {
-            x = i;
-            while (s[i + 1] && (ft_isalnum(s[i + 1]) || s[i + 1] == '_'))
-            {
-                if (s[x + 1] && s[x] == DOLLAR && ft_isdigit(s[x + 1]))
-                    {i++;break ;}
-                i++;
-            }
-            if (x != i || valid_next(s, &i))
-            {
-                i++;
-                if (exp)
-                    free(exp);
-                exp = malloc(sizeof(t_exp));
-                exp->sub = ft_substr(s, x + 1, i - x - 1);
-                exp->res = check_env(exp->sub, &env);
-                exp->next = NULL;
-                head = ft_lstadd_backex(head, exp);
-                if (exp->res)
-                    res += ft_strlen(exp->res);
-                if (!s[i])
-                    break ;
-            }
-        }
+            check_nextt(s, &i, shell, 0);
+        if (s[i] == DOLLAR)
+            continue;
         i++;
-        res++;
     }
-    *expp = head;
-    return (res + 1);
+    showw_exp(shell);
 }
 
 char *ft_expand_hd(char *s, t_shell **shell)
 {
     int i = 0;
     int x = 0;
-    t_exp *exp = NULL;
-    char *res = malloc(sizeof(char) * (count_malloc_headoc(s, shell, &exp)));
-    int m = 0;
+    int xp = 0;
+    simple_word_hd(s, shell);
+    char *res = malloc(sizeof(char) * (count_malloc_headoc(s, (*shell)->exp)));
+    t_exp *exp = (*shell)->exp;
     while (s[i])
     {
         if (s[i] == DOLLAR && exp)
-        {
-            i += ft_strlen(exp->sub) + 1;
-            while (exp && exp->res && exp->res[m])
+        {printf("DODODODO\n");
+            
+            while (s[i] == DOLLAR && exp)
             {
-                res[x] = exp->res[m];
-                m++;
+                if (exp->valid == 1)
+                {
+                    xp = 0;
+                    i += ft_strlen(exp->sub);
+                    while (exp->res[xp])
+                    {
+                        res[x] = exp->res[xp];
+                        xp++;
+                        x++;
+                    }
+                }
+                else if (exp->valid == -1)
+                {
+                    xp = 0;
+                    while (exp->res[xp])
+                    {   
+                        res[x] = exp->res[xp];
+                        xp++;
+                        x++;
+                    }
+                    i = i + ft_strlen(exp->sub) - 1;
+                }
+                else if(exp->valid == 2 || exp->valid == 7)
+                {
+                    xp = 0;
+                    while (exp->res[xp])
+                    {
+                        res[x] = exp->res[xp];
+                        xp++;
+                        x++;
+                    }
+                    exp = exp->next;
+                    break;
+                }
+                else
+                    i = i + ft_strlen(exp->sub);
+                exp = exp->next;
+            }
+        }
+        else
+        {
+            if (s[i] == BS && s[i + 1] == DOLLAR)
+                {}
+            else
+            {
+                res[x] = s[i];
                 x++;
             }
-            exp = exp->next;
         }
-        res[x] = s[i];
-        x++;
+        if (s[i] == 0)
+            break;
         i++;
     }
     res[x] = '\0';
