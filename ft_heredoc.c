@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/22 18:26:50 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/23 10:55:25 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,7 @@ t_save    *ft_lstnew_hd(char *s, t_shell **shell)
 void show_save(t_save *save)
 {
     t_save *tmp = save;
+    printf("hii\n");
     while (tmp)
     {
         printf("sasasasasasasa is >>>>>>> [%s]\n",tmp->str_save);
@@ -433,5 +434,7 @@ void ft_heredoc(t_shell **shell)
     show_array(array);
     if (array && array[0])
     {(*shell)->save = start_implementation(array, shell);
-    show_save((*shell)->save);}
+    show_save((*shell)->save);
+    (*shell)->exp = NULL;
+    }
 }

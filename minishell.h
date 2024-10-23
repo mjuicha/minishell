@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 10:57:22 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/22 17:44:06 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/23 13:56:04 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct s_shell
 void	display_prompt(void);
 char    *ft_handle_signals(t_shell **shell);
 void    ft_parser(char *line);
-int     ft_lexer(t_shell **shell);
+int         ft_lexer(t_shell **shell);
 int     empty(char *line);
 t_env   *ft_init_env(char **env);
 void    ft_init_shell(t_shell **shell, char **env);

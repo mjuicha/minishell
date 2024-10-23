@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/22 18:18:20 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/23 14:23:03 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,7 +410,7 @@ char    *expand_var(char *s, t_shell **shell)
                         }
                         i = i + ft_strlen(exp->sub) - 1;
                     }
-                    else if(exp->valid == 2)
+                    else if(exp->valid == 2 || exp->valid == 7)
                     {
                         xp = 0;
                         while (exp->res[xp])
