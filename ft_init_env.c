@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:04:00 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/21 18:01:58 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/24 18:16:01 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_env    *ft_envnew(char *env)
     t_env    *new;
 
     new = malloc(sizeof(t_env));
-    if (!new)
+    if (!new || !env)
         return (NULL);
     new->env = fill_env(env);
     new->var = fill_var(env);

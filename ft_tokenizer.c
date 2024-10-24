@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/03 12:30:13 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/24 18:31:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int     nospec(char c)
 {
-    if (c == PP || c == RI || c == RO || c == HERDOC || c == APPEND || c == ' ' || c == '\t' || c == 0)
+    if (c == PP || c == RI || c == RO || c == ' ' || (c >= 9 && c <= 13) || c == 0)
         return (0);
     return (1);
 }
@@ -60,6 +60,8 @@ int     count_malloc(char *line, int i, int start)
 
 char   to_quote(char *line, int i)
 {
+    if (!line)
+        return (0);
     while (line[i])
     {
         if (line[i] == DQ || line[i] == SQ)
@@ -90,12 +92,14 @@ t_token    *get_quoted(char *line, int *i, int start, int *status)
                 quote = line[*i];
             }
         }
-        else if (!nospec(line[*i])  && (*status) % 2 == 0)
+        else if (!nospec(line[*i])  && (*status) % 2 == 0)//invalid " " && CLOSED QUOTE
             break ;
         (*i)++;
     }
     malloc = count_malloc(line, *i, start);
     new->token_name = ft_substr(line, start, malloc);
+    printf("malloc = %d\n", malloc);
+    printf("new->token_name = [%s]\n", new->token_name);
     new->type = WORD;
     new->next = NULL;
     return (new);
@@ -191,6 +195,8 @@ void    show_token(t_token *token)
 {
     t_token *tmp;
 
+    if (!token)
+        return ;
     tmp = token;
     int i = 12;
     while (tmp)
@@ -222,7 +228,6 @@ t_token     *ft_tokenizer(char *line)
             token = ft_tokenadd_back(token,get_quoted(line, &i, i, &status));
         else if (line[i] == RI || line[i] == RO)
              token = ft_tokenadd_back(token, get_redirection(line, &i));
-            
         else if (line[i] == PP)
             token = ft_tokenadd_back(token, get_pipe(line, &i));
         else

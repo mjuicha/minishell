@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:14:23 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/23 18:12:33 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/24 18:24:54 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void handler(int sig)
 {
     (void)sig;
 	ft_putchar_fd('\n', 1);
-	rl_on_new_line();
 	rl_replace_line("", 0);
+	rl_on_new_line();
 	rl_redisplay();
 }
 void    l(void)
@@ -28,7 +28,9 @@ void    l(void)
 void    free_env(t_env **env_list)
 {
     t_env   *tmp;
-
+    
+    if (!(*env_list))
+        return ;
     tmp = *env_list;
     while (tmp)
     {
@@ -47,8 +49,12 @@ void    free_env(t_env **env_list)
 
 void    free_shell(t_shell **shell)
 {
-    free_env(&(*shell)->env_list);
+    if (!(shell))
+        return ;
     free(*shell);
+    if (!(*shell)->env_list)
+        return ;
+    free_env(&(*shell)->env_list);
     // free_token((*shell)->token);
 }
 

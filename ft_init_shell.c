@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 00:44:54 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/22 16:30:07 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/24 18:00:23 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void    ft_init_shell(t_shell **shell, char **env)
 {
     *shell = malloc(sizeof(t_shell));
-    if (!*shell)
+    if (!*shell || !env)
         return ;
 	(*shell)->env_list = ft_init_env(env);
 //    show_env((*shell)->env_list);
