@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:14:23 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/24 18:24:54 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/25 10:36:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@ void    free_shell(t_shell **shell)
 {
     if (!(shell))
         return ;
-    free(*shell);
-    if (!(*shell)->env_list)
-        return ;
     free_env(&(*shell)->env_list);
+    free(*shell);
     // free_token((*shell)->token);
 }
 
@@ -64,6 +62,7 @@ void    end_of_line(t_shell **shell)
     ft_putstr_fd("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ", 2);
     ft_putendl_fd("exit", 2);
     free_shell(shell);
+    printf("BEFORE FREE SHELL\n");
     // atexit(l);
     exit(EXIT_SUCCESS);
 }
