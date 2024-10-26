@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include "libft/libft.h"
 
 void l(void)
 {
@@ -19,6 +20,7 @@ int main(int argc, char const *argv[])
 {
     (void)argc;
     (void)argv;
+    printf("%s\n", strdup(NULL));
     // char *str = malloc(sizeof(char) * 10);
     // str = NULL;
     // (void)str;

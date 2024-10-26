@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/23 10:55:25 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/26 18:26:58 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int count_heredoc(t_shell **shell)
 {
     t_token *token;
 
+    if (!shell || !(*shell)->token)
+        return (0);
     int i = 0;
     token = (*shell)->token;
     if (!token)
@@ -103,6 +105,8 @@ void    riddance(char **array,t_herd **herd, int *i)
 void init_herd(t_herd **herd, char **array)
 {
     (*herd) = malloc(sizeof(t_herd));
+    if (!(*herd))
+        return ;
     (*herd)->del = array;
     (*herd)->exit = 0;
     (*herd)->store = 0;
@@ -196,6 +200,8 @@ char *ft_expand_hd(char *s, t_shell **shell)
     int xp = 0;
     simple_word_hd(s, shell);
     char *res = malloc(sizeof(char) * (count_malloc_headoc(s, (*shell)->exp)));
+    if (!res)
+        return (NULL);
     t_exp *exp = (*shell)->exp;
     while (s[i])
     {
@@ -375,8 +381,12 @@ char    *ft_rm(char *s, t_shell **shell)
     int quote = 0;
     int status = 0;
     int i = 0;
+    if (!s || !shell || !(*shell))
+        return ("");
     (*shell)->hd_flag = 0;
     char *res = malloc(sizeof(char) * (count_malloc_quote_hd(s)));
+    if (!res)
+        return (NULL);
     printf("malloc herdoc = %d\n", count_malloc_quote_hd(s));
     int x = 0;
     while (s[i])
@@ -408,15 +418,19 @@ char    *ft_rm(char *s, t_shell **shell)
     
 void ft_heredoc(t_shell **shell)
 {
+    if (!shell || !(*shell)->token)
+        return ;
     int i;
     i = count_heredoc(shell);
+    if (i == 0)
+        return ;
     char **array = malloc(sizeof(char *) * (i + 1));
     if (!array)
         return ;
     i = 0;
     t_token *token = (*shell)->token;
     if (!token)
-        return ;
+        return (free(array));
     while (token)
     {
         if (token->type == HERDOC && token->next)

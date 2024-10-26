@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/24 18:31:18 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/26 18:14:44 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ char   to_quote(char *line, int i)
 t_token    *get_quoted(char *line, int *i, int start, int *status)
 {
     t_token *new = malloc(sizeof(t_token));
+    if (!new)
+        return (NULL);
     char    quote;
     int     malloc;
     if (!line)
@@ -107,8 +109,11 @@ t_token    *get_quoted(char *line, int *i, int start, int *status)
 
 t_token    *get_redirection(char *line, int *i)
 {
+    if (!line)
+        return (NULL);
     t_token *new = malloc(sizeof(t_token));
-
+    if (!new)
+        return (NULL);
     new->next = NULL;
     if (line[*i] == '<')
     {
@@ -139,20 +144,23 @@ t_token    *get_redirection(char *line, int *i)
     return (new);
 }
 
-t_token    *get_pipe(char *line, int *i)
+t_token    *get_pipe(int *i)
 {
-    (void)line;
     t_token *new = malloc(sizeof(t_token));
-      (*i)++;
-        new->token_name = ft_strdup("|");
-        new->type = PP;
-        new->next = NULL;
-        return (new);
+    if (!new)
+        return (NULL);
+    (*i)++;
+    new->token_name = ft_strdup("|");
+    new->type = PP;
+    new->next = NULL;
+    return (new);
 }
 
 t_token    *get_word(char *line, int *i)
 {
     t_token *new = malloc(sizeof(t_token));
+    if (!new)
+        return (NULL);
     int start;
     char fin;
 
@@ -191,6 +199,7 @@ t_token *ft_tokenadd_back(t_token *token, t_token *new)
     tmp->next = new;
     return (token);
 }
+
 void    show_token(t_token *token)
 {
     t_token *tmp;
@@ -216,7 +225,7 @@ t_token     *ft_tokenizer(char *line)
     int     status;
 
     token = NULL;
-    if ( !line)
+    if (!line)
         return (NULL);
     i = 0;
     status = 0;
@@ -229,7 +238,7 @@ t_token     *ft_tokenizer(char *line)
         else if (line[i] == RI || line[i] == RO)
              token = ft_tokenadd_back(token, get_redirection(line, &i));
         else if (line[i] == PP)
-            token = ft_tokenadd_back(token, get_pipe(line, &i));
+            token = ft_tokenadd_back(token, get_pipe(&i));
         else
             token = ft_tokenadd_back(token, get_quoted(line, &i, i, &status));
     }
