@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/26 18:14:44 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/27 17:33:40 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ int     count_malloc(char *line, int i, int start)
 {
     int x;
     int res;
+    int c;// check empty space
 
     res = 0;
+    c = start;
     x = start;
     if (!line)
         return (0);
@@ -73,17 +75,15 @@ char   to_quote(char *line, int i)
 
 t_token    *get_quoted(char *line, int *i, int start, int *status)
 {
-    t_token *new = malloc(sizeof(t_token));
-    if (!new)
-        return (NULL);
     char    quote;
-    int     malloc;
+    int     mallloc;
+    t_token *new;
     if (!line)
         return (NULL);
     quote = to_quote(line, *i);
     *status = 0;
 
-    malloc = 1;
+    mallloc = 1;
     while (line[*i])
     {
         if (line[*i] == SQ || line[*i] == DQ)
@@ -98,9 +98,12 @@ t_token    *get_quoted(char *line, int *i, int start, int *status)
             break ;
         (*i)++;
     }
-    malloc = count_malloc(line, *i, start);
-    new->token_name = ft_substr(line, start, malloc);
-    printf("malloc = %d\n", malloc);
+    mallloc = count_malloc(line, *i, start);
+    new = malloc(sizeof(t_token));
+    if (!new)
+        return (NULL);
+    new->token_name = ft_substr(line, start, mallloc);
+    printf("malloc = %d\n", mallloc);
     printf("new->token_name = [%s]\n", new->token_name);
     new->type = WORD;
     new->next = NULL;
@@ -203,7 +206,7 @@ t_token *ft_tokenadd_back(t_token *token, t_token *new)
 void    show_token(t_token *token)
 {
     t_token *tmp;
-
+    printf(" __________________\n");
     if (!token)
         return ;
     tmp = token;
@@ -216,6 +219,26 @@ void    show_token(t_token *token)
     printf(" __________________\n");
     printf("|   next token     |\n");
     printf("|__________________|\n");
+}
+
+void    *quote_msg_error(t_token *token)
+{
+    t_token *tmp;
+
+    tmp = token;
+    while (tmp)
+    {
+        free(tmp->token_name);
+        tmp = tmp->next;
+    }
+    tmp = token;
+    while (tmp)
+    {
+        free(tmp);
+        tmp = tmp->next;
+    }
+    printf("minishell: syntax error: unclosed quotes\n");
+    return (NULL);
 }
 
 t_token     *ft_tokenizer(char *line)
@@ -231,7 +254,7 @@ t_token     *ft_tokenizer(char *line)
     status = 0;
     while (line[i])
     {
-        while (line[i] == ' ' || line[i] == '\t')
+        while (line[i] == ' ' || (line[i] >= 9 && line[i] <= 13))
             i++;
         if (line[i] == DQ || line[i] == SQ)
             token = ft_tokenadd_back(token,get_quoted(line, &i, i, &status));
@@ -239,14 +262,13 @@ t_token     *ft_tokenizer(char *line)
              token = ft_tokenadd_back(token, get_redirection(line, &i));
         else if (line[i] == PP)
             token = ft_tokenadd_back(token, get_pipe(&i));
+        else if (line[i] == 0)
+            break ;
         else
             token = ft_tokenadd_back(token, get_quoted(line, &i, i, &status));
     }
     if (status % 2 != 0)
-    {
-        printf("minishell: syntax error: unclosed quotes\n");
-        return (NULL);
-    }
+        return (quote_msg_error(token));
     // show_token(token);
     return (token);
 }

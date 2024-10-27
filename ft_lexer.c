@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 19:10:17 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/23 18:17:22 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/27 16:55:31 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,9 @@ void    lk(void)
 int ft_lexer(t_shell **shell)
 {
     (*shell)->token = ft_tokenizer((*shell)->line);
-    show_token((*shell)->token);
+    if ((*shell)->token == NULL)
+        return (1);
+    // show_token((*shell)->token);
     if (syntax_error((*shell)->token))
     {
         ft_reset(shell);

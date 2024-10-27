@@ -11,22 +11,24 @@ void l(void)
 
 void by()
 {
-    char *str = malloc(sizeof(char) * 10);
-    str = NULL;
     atexit(l);
     return;
 }
+void bg()
+{
+    char *s = malloc(sizeof(char) * 10);
+    sleep(10);
+}
+
 int main(int argc, char const *argv[])
 {
     (void)argc;
     (void)argv;
-    printf("%s\n", strdup(NULL));
+    bg();
     // char *str = malloc(sizeof(char) * 10);
     // str = NULL;
     // (void)str;
-    printf("%lu\n", strlen("$="));
     // by();
-    while (1)
-    {}
+
     return 0;
 }

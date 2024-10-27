@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/26 18:26:58 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/27 18:43:14 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void    eof_heredoc(t_herd **herd)
         free((*herd)->del[i]);
         i++;
     }
+    free((*herd)->del);
     (*herd)->exit = 1;
 }
 
@@ -86,19 +87,25 @@ void    signal_heredoc(t_herd **herd)
 {
     char *input = NULL;
 
-    printf("hh\n");
-    if (*herd_flag() == 0)
-        input = readline("> ");
-    if (!input || *herd_flag() == 1)
+    input = readline("> ");
+    if (!input)
         eof_heredoc(herd);
     (*herd)->input = input;
 }
+int max(char *s1, char *s2)
+{
+    int x;
+    int y;
 
+    x = ft_strlen(s1);
+    y = ft_strlen(s2);
+    return (x >= y ? x : y);
+}
 void    riddance(char **array,t_herd **herd, int *i)
 {
     if (array[*i] && !array[*i + 1])
         (*herd)->store = 1;
-    else if (ft_strncmp(array[*i], (*herd)->input, ft_strlen((*herd)->input)) == 0)
+    else if (ft_strncmp(array[*i], (*herd)->input, max(array[*i], (*herd)->input)) == 0)
         ++(*i);
 }
 
@@ -317,15 +324,6 @@ void    store_input(t_herd **herd, t_shell **shell)
     
 }
 
-int max(char *s1, char *s2)
-{
-    int x;
-    int y;
-
-    x = ft_strlen(s1);
-    y = ft_strlen(s2);
-    return (x >= y ? x : y);
-}
 t_save    *start_implementation(char **array, t_shell **shell)
 {
     t_herd *herd;
@@ -333,8 +331,7 @@ t_save    *start_implementation(char **array, t_shell **shell)
     if (!herd)
         return (NULL);
     int i = 0;
-    (void)shell;
-    *herd_flag() = 0;
+    // *herd_flag() = 0;
     while (1)
     {
         signal_heredoc(&herd);
@@ -343,7 +340,7 @@ t_save    *start_implementation(char **array, t_shell **shell)
             return (free(herd), NULL);
         riddance(herd->del, &herd, &i);
         if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], max(herd->input, herd->del[i])) == 0)
-            return (free(herd), herd->save);
+            return (free(herd->input),free(herd), herd->save);//////tomorrow
         store_input(&herd, shell);
         free(herd->input);
     }
@@ -354,7 +351,9 @@ int count_malloc_quote_hd(char *s)
     int i = 0;
     int status = 0;
     int quote = 0;
-    int res = 0; 
+    int res = 0;
+    if (!s)
+        return (0);
     while (s[i]) 
     { 
         if ((s[i] == DQ || s[i] == SQ) && status == 0)
@@ -376,18 +375,19 @@ int count_malloc_quote_hd(char *s)
     }
     return (res + 1);
 }
-char    *ft_rm(char *s, t_shell **shell)
+char    *get_delimiter(char *s, t_shell **shell)
 {
     int quote = 0;
     int status = 0;
     int i = 0;
     if (!s || !shell || !(*shell))
-        return ("");
+        return (NULL);
     (*shell)->hd_flag = 0;
-    char *res = malloc(sizeof(char) * (count_malloc_quote_hd(s)));
+    int mallloc = count_malloc_quote_hd(s);
+    char *res = malloc(sizeof(char) * mallloc);
     if (!res)
         return (NULL);
-    printf("malloc herdoc = %d\n", count_malloc_quote_hd(s));
+    printf("malloc herdoc = %d\n", mallloc);
     int x = 0;
     while (s[i])
     {
@@ -438,7 +438,7 @@ void ft_heredoc(t_shell **shell)
             token = token->next;
             if (token->type == WORD)
             {
-                array[i] = ft_strdup(ft_rm(token->token_name, shell));
+                array[i] = get_delimiter(token->token_name, shell);
                 i++;
             }
         }

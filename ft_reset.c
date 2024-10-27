@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 14:17:53 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/26 17:37:25 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/27 16:35:47 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void    free_token(t_token **token)
     t_token *tmp;
     if (!token || !(*token))
         return ;
-
     tmp = *token;
     while (tmp)
     {
@@ -37,7 +36,6 @@ void    ft_reset(t_shell **shell)
 {
     if (!shell || !(*shell))
         return ;
-    free((*shell)->line);
     if ((*shell)->token)
         free_token(&(*shell)->token);
 }
