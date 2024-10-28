@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/27 18:43:14 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/28 12:56:28 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,11 +143,12 @@ int valid_next(char *s, int *i)
         return (++(*i));
     return (0);
 }
+
 int count_malloc_headoc(char *s, t_exp *exp)
 {
     t_exp *mexp = exp;
     int res = 0;
-    if (!s || !mexp)
+    if (!s)
         return (0);
     res = ft_strlen(s);
     while (mexp)
@@ -170,6 +171,7 @@ int count_malloc_headoc(char *s, t_exp *exp)
     }
     return (res + 1);
 }
+
 void    showw_exp(t_shell **shell)
 {
     t_exp *exp = (*shell)->exp;
@@ -188,6 +190,8 @@ void    showw_exp(t_shell **shell)
 void    simple_word_hd(char *s, t_shell **shell)
 {
     int i = 0;
+    if (!s || !shell || !(*shell))
+        return ;
     (*shell)->exp = NULL;
     while (s[i])
     {
@@ -200,11 +204,34 @@ void    simple_word_hd(char *s, t_shell **shell)
     showw_exp(shell);
 }
 
+void    free_exp(t_exp **exp)
+{
+    if (!exp || !(*exp))
+        return ;
+    t_exp *tmp = *exp;
+    t_exp *tmp2;
+    while (tmp)
+    {
+        free(tmp->sub);
+        free(tmp->res);
+        tmp = tmp->next;
+    }
+    tmp = *exp;
+    while (tmp)
+    {
+        tmp2 = tmp->next;
+        free(tmp);
+        tmp = tmp2;
+    }
+}
+
 char *ft_expand_hd(char *s, t_shell **shell)
 {
     int i = 0;
     int x = 0;
     int xp = 0;
+    if (!s || !shell || !(*shell))
+        return (NULL);
     simple_word_hd(s, shell);
     char *res = malloc(sizeof(char) * (count_malloc_headoc(s, (*shell)->exp)));
     if (!res)
@@ -271,6 +298,7 @@ char *ft_expand_hd(char *s, t_shell **shell)
         i++;
     }
     res[x] = '\0';
+    free_exp(&(*shell)->exp);
     return (res);
 }
 
@@ -278,13 +306,15 @@ t_save    *ft_lstnew_hd(char *s, t_shell **shell)
 {
     t_save *new;
 
+    if (!s)
+        return (NULL);
     new = malloc(sizeof(t_save));
     if (!new)
         return (NULL);
     if ((*shell)->hd_flag == 1)
         new->str_save = ft_strdup(s);
     else
-        new->str_save = ft_strdup(ft_expand_hd(s, shell));
+        new->str_save = ft_expand_hd(s, shell);
     new->next = NULL;
     return (new);
 }
@@ -324,6 +354,20 @@ void    store_input(t_herd **herd, t_shell **shell)
     
 }
 
+void    free_heredoc(t_herd **herd)
+{
+    if (!herd || !(*herd))
+        return ;
+    int i = 0;
+    t_herd *tmp = *herd;
+    while (tmp->del[i])
+    {
+        free(tmp->del[i]);
+        i++;
+    }
+    free(tmp->del);
+}
+
 t_save    *start_implementation(char **array, t_shell **shell)
 {
     t_herd *herd;
@@ -335,12 +379,14 @@ t_save    *start_implementation(char **array, t_shell **shell)
     while (1)
     {
         signal_heredoc(&herd);
-        // signal(SIGINT, herd_sig);
-        if (herd->exit == 1 || *herd_flag() == 1 )
-            return (free(herd), NULL);
+        signal(SIGINT, herd_sig);
+        if (herd->exit == 1 || *herd_flag() == 1 )//R
+            {return (free(herd), NULL);
+            return (free_heredoc(&herd), NULL);
+            }
         riddance(herd->del, &herd, &i);
         if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], max(herd->input, herd->del[i])) == 0)
-            return (free(herd->input),free(herd), herd->save);//////tomorrow
+            return (free(herd), herd->save);
         store_input(&herd, shell);
         free(herd->input);
     }

@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/26 18:28:45 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/28 10:31:24 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,8 @@ void    check_nextt(char *s, int *n, t_shell **shell, int mode)
     (*n)++;
     int i = *n;
     t_exp *exp = malloc(sizeof(t_exp));
+    if (!exp || !s || !shell)
+        return ;
     int m;
     m = to_check(s, i);
     if (check_back_slash(s, i))

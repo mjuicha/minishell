@@ -14,6 +14,9 @@
         "limits.h": "c",
         "errno.h": "c",
         "libft.h": "c",
-        "complex": "c"
+        "complex": "c",
+        "__string": "c",
+        "algorithm": "c",
+        "functional": "c"
     }
 }
