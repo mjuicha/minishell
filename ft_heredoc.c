@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/28 12:56:28 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/28 17:43:46 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,6 +299,7 @@ char *ft_expand_hd(char *s, t_shell **shell)
     }
     res[x] = '\0';
     free_exp(&(*shell)->exp);
+    (*shell)->exp = NULL;
     return (res);
 }
 
@@ -354,18 +355,24 @@ void    store_input(t_herd **herd, t_shell **shell)
     
 }
 
-void    free_heredoc(t_herd **herd)
+t_save    *free_heredoc(t_herd **herd)
 {
+    t_save *tmp;
+    
     if (!herd || !(*herd))
-        return ;
+        return (NULL);
+    tmp = (*herd)->save;
+    if ((*herd)->exit == 0)
+        free((*herd)->input);
     int i = 0;
-    t_herd *tmp = *herd;
-    while (tmp->del[i])
+    while ((*herd)->del[i])
     {
-        free(tmp->del[i]);
+        free((*herd)->del[i]);
         i++;
     }
-    free(tmp->del);
+    free((*herd)->del);
+    free(*herd);
+    return (tmp);
 }
 
 t_save    *start_implementation(char **array, t_shell **shell)
@@ -379,14 +386,12 @@ t_save    *start_implementation(char **array, t_shell **shell)
     while (1)
     {
         signal_heredoc(&herd);
-        signal(SIGINT, herd_sig);
-        if (herd->exit == 1 || *herd_flag() == 1 )//R
-            {return (free(herd), NULL);
-            return (free_heredoc(&herd), NULL);
-            }
+        // signal(SIGINT, herd_sig);
+        if (herd->exit == 1)//R
+            return (free_heredoc(&herd));
         riddance(herd->del, &herd, &i);
         if (herd->store == 1 && ft_strncmp(herd->input,herd->del[i], max(herd->input, herd->del[i])) == 0)
-            return (free(herd), herd->save);
+            return (free_heredoc(&herd));
         store_input(&herd, shell);
         free(herd->input);
     }
@@ -495,6 +500,5 @@ void ft_heredoc(t_shell **shell)
     if (array && array[0])
     {(*shell)->save = start_implementation(array, shell);
     show_save((*shell)->save);
-    (*shell)->exp = NULL;
     }
 }
