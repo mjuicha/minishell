@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/28 10:31:24 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/29 17:47:46 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,8 @@ t_exp   *exp_DOLLAR(void)
 }
 int     check_back_slash(char *s, int i)
 {
+    if (!s)
+        return (0);
     if (s[i - 2] == BS)
         return (1);
     return 0;
@@ -279,11 +281,7 @@ void    simple_word(char *s, int *n, t_shell **shell)
 char    *valid_status(char *s, t_shell **shell)
 {
     int i = 0;
-    // int start;
-    // int status = 0;
-    // int mode = 1;
-    // (void)exp;
-    if (!s || !shell)
+    if (!s || !shell || (*shell)->exp)
         return (NULL);
     (*shell)->exp = NULL;
     while (s[i])
@@ -305,6 +303,8 @@ int count_malloc_quote(char *s)
     int status = 0;
     int quote = 0;
     int res = 0; 
+    if (!s)
+        return (0);
     while (s[i]) 
     { 
         if ((s[i] == DQ || s[i] == SQ) && status == 0)
@@ -328,6 +328,8 @@ int count_malloc_quote(char *s)
 int count_malloc_exp(char *s, t_exp *exp)
 {
     t_exp *mexp = exp;
+    if (!s)
+        return (0);
     (void)s;
     if (!mexp)
         return (0);
@@ -445,6 +447,7 @@ char    *expand_var(char *s, t_shell **shell)
         i++;
     }
     exp_str[x] = '\0';
+    printf("WCHICH EXPAND\n");  
     printf("[string]----->  [\x1b[31;1m%s\x1b[0m]\n", exp_str);//\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m // for Red is 
     free((*shell)->exp);
     (*shell)->exp = NULL;
@@ -455,15 +458,14 @@ char    *start_expand(char *s, t_shell **shell)
 {
     if (!s || !shell)
         return (NULL);
-    // char *string = ft_strdup(s);
-
     if (ft_strchr(s, DOLLAR))
     {
-         valid_status(s, shell) ;
+         valid_status(s, shell);
         //  free(s);
         // /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*///**//**/
             // return (expand_var(s, shell));/**/
     }
+    free(s);
     return (expand_var(s, shell));
 }
 
