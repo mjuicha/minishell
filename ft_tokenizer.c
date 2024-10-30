@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/27 17:33:40 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/30 18:01:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ t_token    *get_quoted(char *line, int *i, int start, int *status)
     }
     mallloc = count_malloc(line, *i, start);
     new = malloc(sizeof(t_token));
+    
     if (!new)
         return (NULL);
     new->token_name = ft_substr(line, start, mallloc);
@@ -115,6 +116,7 @@ t_token    *get_redirection(char *line, int *i)
     if (!line)
         return (NULL);
     t_token *new = malloc(sizeof(t_token));
+    
     if (!new)
         return (NULL);
     new->next = NULL;
@@ -150,6 +152,7 @@ t_token    *get_redirection(char *line, int *i)
 t_token    *get_pipe(int *i)
 {
     t_token *new = malloc(sizeof(t_token));
+    
     if (!new)
         return (NULL);
     (*i)++;
@@ -162,6 +165,7 @@ t_token    *get_pipe(int *i)
 t_token    *get_word(char *line, int *i)
 {
     t_token *new = malloc(sizeof(t_token));
+    
     if (!new)
         return (NULL);
     int start;

@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 14:49:50 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/09/28 11:04:58 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/30 18:01:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	else
 		i = len + 1;
 	res = malloc(i * sizeof(char));
+    
 	if (!res)
 		return (NULL);
 	ft_strlcpy(res, src, i);

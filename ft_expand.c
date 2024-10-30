@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/29 17:47:46 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/30 18:01:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int    to_check(char *s, int i)
 void    spec_exp(char *s, int *i, t_shell **shell)
 {
     t_exp *exp = malloc(sizeof(t_exp));
+    
 
     if (s[*i] == DOLLAR)
     {
@@ -174,6 +175,7 @@ t_exp   *exp_DOLLAR(void)
     t_exp *exp_DOLLAR;
 
     exp_DOLLAR = malloc(sizeof(t_exp));
+    
     exp_DOLLAR->sub = ft_strdup("$");
     exp_DOLLAR->res = ft_strdup("$");
     exp_DOLLAR->valid = 2;
@@ -193,6 +195,7 @@ void    check_nextt(char *s, int *n, t_shell **shell, int mode)
     (*n)++;
     int i = *n;
     t_exp *exp = malloc(sizeof(t_exp));
+    
     if (!exp || !s || !shell)
         return ;
     int m;
@@ -372,6 +375,7 @@ char    *expand_var(char *s, t_shell **shell)
     mallloc = count_malloc_quote(s) + count_malloc_exp(s, (*shell)->exp);
     printf("mallloc = %d\n", mallloc);
     exp_str = malloc(sizeof(char) * mallloc + 1);
+    
     i = 0;
     while (s[i])
     {
@@ -447,9 +451,9 @@ char    *expand_var(char *s, t_shell **shell)
         i++;
     }
     exp_str[x] = '\0';
-    printf("WCHICH EXPAND\n");  
-    printf("[string]----->  [\x1b[31;1m%s\x1b[0m]\n", exp_str);//\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m // for Red is 
-    free((*shell)->exp);
+    free(s);
+    printf("[string]----->  [\x1b[31;1m%s\x1b[0m]\n", exp_str);
+    free_exp(&(*shell)->exp);
     (*shell)->exp = NULL;
     return (exp_str);
 }
@@ -465,7 +469,6 @@ char    *start_expand(char *s, t_shell **shell)
         // /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*///**//**/
             // return (expand_var(s, shell));/**/
     }
-    free(s);
     return (expand_var(s, shell));
 }
 

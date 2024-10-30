@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/28 17:43:46 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/30 18:22:03 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,6 @@ void    eof_heredoc(t_herd **herd)
 {
     if (!herd || !(*herd)->del)
         return ;
-    int i = 0;
-    while ((*herd)->del[i])
-    {
-        free((*herd)->del[i]);
-        i++;
-    }
-    free((*herd)->del);
     (*herd)->exit = 1;
 }
 
@@ -112,6 +105,7 @@ void    riddance(char **array,t_herd **herd, int *i)
 void init_herd(t_herd **herd, char **array)
 {
     (*herd) = malloc(sizeof(t_herd));
+    
     if (!(*herd))
         return ;
     (*herd)->del = array;
@@ -236,6 +230,7 @@ char *ft_expand_hd(char *s, t_shell **shell)
     char *res = malloc(sizeof(char) * (count_malloc_headoc(s, (*shell)->exp)));
     if (!res)
         return (NULL);
+    
     t_exp *exp = (*shell)->exp;
     while (s[i])
     {
@@ -310,6 +305,7 @@ t_save    *ft_lstnew_hd(char *s, t_shell **shell)
     if (!s)
         return (NULL);
     new = malloc(sizeof(t_save));
+    
     if (!new)
         return (NULL);
     if ((*shell)->hd_flag == 1)
@@ -436,6 +432,7 @@ char    *get_delimiter(char *s, t_shell **shell)
     (*shell)->hd_flag = 0;
     int mallloc = count_malloc_quote_hd(s);
     char *res = malloc(sizeof(char) * mallloc);
+    
     if (!res)
         return (NULL);
     printf("malloc herdoc = %d\n", mallloc);
@@ -476,6 +473,7 @@ void ft_heredoc(t_shell **shell)
     if (i == 0)
         return ;
     char **array = malloc(sizeof(char *) * (i + 1));
+    
     if (!array)
         return ;
     i = 0;

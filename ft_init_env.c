@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 15:04:00 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/24 18:16:01 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/30 18:01:18 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char    *fill_var(char *env)
     while (env[i] && env[i] != '=')
         i++;
     str = malloc(sizeof(char) * (i + 1));
+    
     if (!str)
         return (NULL);
     i = 0;
@@ -51,6 +52,7 @@ char    *fill_value(char *env)
     while (env[i])
         i++;
     str = malloc(sizeof(char) * (i - r + 1));
+    
     if (!str)
         return (NULL);
     i = 0;
@@ -79,6 +81,7 @@ t_env    *ft_envnew(char *env)
     t_env    *new;
 
     new = malloc(sizeof(t_env));
+    
     if (!new || !env)
         return (NULL);
     new->env = fill_env(env);
