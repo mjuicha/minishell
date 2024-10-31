@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 01:20:52 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/30 18:01:18 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/31 17:38:06 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ t_token    *get_quoted(char *line, int *i, int start, int *status)
     if (!new)
         return (NULL);
     new->token_name = ft_substr(line, start, mallloc);
-    printf("malloc = %d\n", mallloc);
-    printf("new->token_name = [%s]\n", new->token_name);
+    // printf("malloc = %d\n", mallloc);
+    // printf("new->token_name = [%s]\n", new->token_name);
     new->type = WORD;
     new->next = NULL;
     return (new);
@@ -210,7 +210,6 @@ t_token *ft_tokenadd_back(t_token *token, t_token *new)
 void    show_token(t_token *token)
 {
     t_token *tmp;
-    printf(" __________________\n");
     if (!token)
         return ;
     tmp = token;
@@ -220,9 +219,6 @@ void    show_token(t_token *token)
         printf("[%d]%s\n",i, tmp->token_name);
         tmp = tmp->next;
     }
-    printf(" __________________\n");
-    printf("|   next token     |\n");
-    printf("|__________________|\n");
 }
 
 void    *quote_msg_error(t_token *token)

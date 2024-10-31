@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 14:17:53 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/30 17:47:36 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/31 13:50:26 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ void    ft_reset(t_shell **shell)
         return ;
     if ((*shell)->token)
         free_token(&(*shell)->token);
-    // if ((*shell)->save)
-    //     free_save(&(*shell)->save);
+    if ((*shell)->save)
+        free_save(&(*shell)->save);
 }

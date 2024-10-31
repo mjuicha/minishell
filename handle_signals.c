@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 12:14:23 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/28 13:44:21 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/31 17:37:03 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void    end_of_line(t_shell **shell)
     ft_putstr_fd("\x1b[32;1m➜\x1b[35;1m  minishell $\x1b[0m ", 2);
     ft_putendl_fd("exit", 2);
     free_shell(shell);
-    printf("BEFORE FREE SHELL\n");
     // atexit(l);
     exit(EXIT_SUCCESS);
 }

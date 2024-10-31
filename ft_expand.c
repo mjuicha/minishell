@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 14:40:19 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/30 18:01:18 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/31 17:36:17 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ void    show_exp(t_shell **shell)
 {
     t_exp *exp = (*shell)->exp;
     if (!exp)
-    {
-        printf("no exp\n");
-        return ;}
-    puts("fd\n");
+        return ;
     while (exp)
     {
         printf("[%s]    ----->  {%s}\n", exp->sub, exp->res);
@@ -218,7 +215,6 @@ void    check_nextt(char *s, int *n, t_shell **shell, int mode)
     }
     if (m == i)
     {
-        printf("i am here\n");
         exp = exp_DOLLAR();
         if ((s[i] == DQ || s[i] == SQ) && mode == 1)
             exp->valid = 0;
@@ -373,7 +369,7 @@ char    *expand_var(char *s, t_shell **shell)
     int status = 0;
     exp = (*shell)->exp;
     mallloc = count_malloc_quote(s) + count_malloc_exp(s, (*shell)->exp);
-    printf("mallloc = %d\n", mallloc);
+    // printf("mallloc = %d\n", mallloc);
     exp_str = malloc(sizeof(char) * mallloc + 1);
     
     i = 0;

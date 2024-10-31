@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:52:31 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/30 18:22:03 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/10/31 17:37:31 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int count_heredoc(t_shell **shell)
         else
             break ;
     }
-    printf("i: %d\n", i);
     return (i);
 }
 
@@ -235,8 +234,7 @@ char *ft_expand_hd(char *s, t_shell **shell)
     while (s[i])
     {
         if (s[i] == DOLLAR && exp)
-        {printf("DODODODO\n");
-            
+        {   
             while (s[i] == DOLLAR && exp)
             {
                 if (exp->valid == 1)
@@ -435,7 +433,6 @@ char    *get_delimiter(char *s, t_shell **shell)
     
     if (!res)
         return (NULL);
-    printf("malloc herdoc = %d\n", mallloc);
     int x = 0;
     while (s[i])
     {
