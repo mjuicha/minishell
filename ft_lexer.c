@@ -6,7 +6,7 @@
 /*   By: mjuicha <mjuicha@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 19:10:17 by mjuicha           #+#    #+#             */
-/*   Updated: 2024/10/29 15:53:09 by mjuicha          ###   ########.fr       */
+/*   Updated: 2024/11/01 19:05:52 by mjuicha          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,8 @@ int ft_lexer(t_shell **shell)
     ft_heredoc(shell);
     ft_expand(shell);//here start
     ft_reset(shell);
+    ft_fd_manager(shell);
+    
         // ft_heredoc(shell);
     return (0);
 }
